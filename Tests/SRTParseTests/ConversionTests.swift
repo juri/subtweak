@@ -1,0 +1,38 @@
+import CustomDump
+@testable import SRTParse
+import Subtitles
+import XCTest
+
+final class ConversionTests: XCTestCase {
+    func testTimestampFromDuration() throws {
+        // 9296 seconds = 2:34:56
+        let duration = Duration(secondsComponent: 9296, attosecondsComponent: 123_600_000_000_000_000)
+        let ts = Timestamp(duration)
+        XCTAssertNoDifference(ts, Timestamp(hours: 2, minutes: 34, seconds: 56, fraction: 124, fractionDigitCount: 3))
+    }
+
+    func testTimestampToDuration() throws {
+        // 9296 seconds = 2:34:56
+        let ts = Timestamp(hours: 2, minutes: 34, seconds: 56, fraction: 124, fractionDigitCount: 3)
+        let duration = ts.duration
+        XCTAssertNoDifference(duration, Duration(secondsComponent: 9296, attosecondsComponent: 124_000_000_000_000_000))
+    }
+
+    func testSubtitleToSub() throws {
+        let subtitle = Subtitle(
+            number: 2,
+            start: Timestamp(hours: 1, minutes: 1, seconds: 1, fraction: 23, fractionDigitCount: 3),
+            end: Timestamp(hours: 1, minutes: 1, seconds: 3, fraction: 24, fractionDigitCount: 3),
+            text: "Hello!"
+        )
+        let sub = Sub(subtitle)
+        XCTAssertNoDifference(
+            sub,
+            Sub(
+                start: Duration(secondsComponent: 3661, attosecondsComponent: 23_000_000_000_000_000),
+                duration: Duration(secondsComponent: 2, attosecondsComponent: 1_000_000_000_000_000),
+                text: "Hello!"
+            )
+        )
+    }
+}
