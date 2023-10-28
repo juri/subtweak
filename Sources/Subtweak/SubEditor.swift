@@ -5,19 +5,25 @@ import SRTParse
 public struct SubEditor {
     private var srtSubs: SRTSubs
 
-    public init(source: Input) throws {
+    public init(srtSubs: SRTSubs) {
+        self.srtSubs = srtSubs
+    }
+
+    public func write(target: Output) throws {
+        let str = try printSRT(srtSubs: self.srtSubs)
+        try target.write(data: Data(str.utf8))
+    }
+}
+
+public extension SubEditor {
+    init(source: Input) throws {
         let data = try source.read()
         guard let string = String(data: data, encoding: .utf8) else {
             throw EncodingError()
         }
 
         let subs = try parseSRT(string: string)
-        self.srtSubs = subs
-    }
-
-    public func write(target: Output) throws {
-        let str = try printSRT(srtSubs: self.srtSubs)
-        try target.write(data: Data(str.utf8))
+        self.init(srtSubs: subs)
     }
 }
 
