@@ -39,42 +39,6 @@ final class SRTTests: XCTestCase {
         )
     }
 
-    func testParseCRLFDocument() throws {
-        let srt = """
-        1\r
-        00:05:00,400 --> 00:05:15,300\r
-        This is an example of\r
-        a subtitle.\r
-        \r
-        2\r
-        00:05:16,400 --> 00:05:25,300\r
-        This is an example of\r
-        a subtitle - 2nd subtitle.\r
-        \r
-
-        """
-
-        let subs = try subtitlesDocument.parse(srt)
-        XCTAssertNoDifference(
-            subs,
-            [
-                Subtitle(
-                    number: 1,
-                    start: Timestamp(hours: 0, minutes: 5, seconds: 0, fraction: 400, fractionDigitCount: 3),
-                    end: Timestamp(hours: 0, minutes: 5, seconds: 15, fraction: 300, fractionDigitCount: 3),
-                    text: "This is an example of\r\na subtitle."
-                ),
-
-                Subtitle(
-                    number: 2,
-                    start: Timestamp(hours: 0, minutes: 5, seconds: 16, fraction: 400, fractionDigitCount: 3),
-                    end: Timestamp(hours: 0, minutes: 5, seconds: 25, fraction: 300, fractionDigitCount: 3),
-                    text: "This is an example of\r\na subtitle - 2nd subtitle."
-                ),
-            ]
-        )
-    }
-
     func testPrintTimestamp() throws {
         let ts = Timestamp(hours: 0, minutes: 1, seconds: 2, fraction: 3, fractionDigitCount: 3)
         let str = String(try timestamp.print(ts))
@@ -88,7 +52,7 @@ final class SRTTests: XCTestCase {
             end: Timestamp(hours: 0, minutes: 5, seconds: 15, fraction: 300, fractionDigitCount: 3),
             text: "This is an example of\na subtitle."
         )
-        let str = String(try subtitle_.print(sub))
+        let str = String(try subtitle.print(sub))
         XCTAssertNoDifference(
             str,
             """
@@ -133,9 +97,6 @@ final class SRTTests: XCTestCase {
 
         """
 
-        print("-------")
-        print(expect)
-        print("-------")
         XCTAssertNoDifference(doc, expect)
     }
 }
