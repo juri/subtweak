@@ -10,6 +10,17 @@ extension Subtitles.Sub {
     }
 }
 
+extension Subtitle {
+    init(number: Int, sub: Sub) {
+        self.init(
+            number: number,
+            start: Timestamp(sub.start),
+            end: Timestamp(sub.start + sub.duration),
+            text: sub.text
+        )
+    }
+}
+
 extension Timestamp {
     var nanoseconds: Int {
         let nanoZeroes: Int = 9
