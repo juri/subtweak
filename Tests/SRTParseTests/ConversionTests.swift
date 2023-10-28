@@ -53,4 +53,37 @@ final class ConversionTests: XCTestCase {
             )
         )
     }
+
+    func testSubsToSubtitles() throws {
+        let subs = Subs(entries: [
+            Sub(
+                start: Duration(secondsComponent: 3661, attosecondsComponent: 23_000_000_000_000_000),
+                duration: Duration(secondsComponent: 2, attosecondsComponent: 1_000_000_000_000_000),
+                text: "Hello 1"
+            ),
+            Sub(
+                start: Duration(secondsComponent: 3663, attosecondsComponent: 451_000_000_000_000_000),
+                duration: Duration(secondsComponent: 1, attosecondsComponent: 18_000_000_000_000_000),
+                text: "Hello 2"
+            ),
+        ])
+        let subtitles = Subtitle.subtitles(from: subs)
+        XCTAssertNoDifference(
+            subtitles,
+            [
+                Subtitle(
+                    number: 1,
+                    start: Timestamp(hours: 1, minutes: 1, seconds: 1, fraction: 23, fractionDigitCount: 3),
+                    end: Timestamp(hours: 1, minutes: 1, seconds: 3, fraction: 24, fractionDigitCount: 3),
+                    text: "Hello 1"
+                ),
+                Subtitle(
+                    number: 2,
+                    start: Timestamp(hours: 1, minutes: 1, seconds: 3, fraction: 451, fractionDigitCount: 3),
+                    end: Timestamp(hours: 1, minutes: 1, seconds: 4, fraction: 469, fractionDigitCount: 3),
+                    text: "Hello 2"
+                ),
+            ]
+        )
+    }
 }

@@ -15,3 +15,11 @@ public struct Sub: Equatable {
         self.text = text
     }
 }
+
+public struct Subs: Equatable {
+    public var entries: [Sub]
+
+    public init(entries: [Sub]) {
+        self.entries = entries
+    }
+}

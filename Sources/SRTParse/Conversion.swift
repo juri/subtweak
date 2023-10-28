@@ -19,6 +19,12 @@ extension Subtitle {
             text: sub.text
         )
     }
+
+    static func subtitles(from subs: Subs) -> [Subtitle] {
+        subs.entries.enumerated().map { index, sub in
+            Subtitle(number: index + 1, sub: sub)
+        }
+    }
 }
 
 extension Timestamp {
