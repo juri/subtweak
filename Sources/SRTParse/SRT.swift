@@ -53,7 +53,7 @@ let timestamp = ParsePrint(input: Substring.self) {
         unapply: { timeStamp in
             let fractionLength = magnitude(timeStamp.fraction)
             let zeroes = String(repeating: "0", count: timeStamp.fractionDigitCount - fractionLength)
-            let fds = String(timeStamp.fraction) + zeroes
+            let fds = zeroes + String(timeStamp.fraction)
             return (timeStamp.hours, timeStamp.minutes, timeStamp.seconds, fds[...])
         }
     )
