@@ -3,7 +3,7 @@ import SRTParse
 @_exported import Subtitles
 
 public struct SubEditor {
-    private var srtSubs: SRTSubs
+    public private(set) var srtSubs: SRTSubs
 
     public init(srtSubs: SRTSubs) {
         self.srtSubs = srtSubs

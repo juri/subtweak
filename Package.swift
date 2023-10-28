@@ -63,7 +63,9 @@ let package = Package(
         .testTarget(
             name: "SubtweakTests",
             dependencies: [
+                "SRTParse",
                 "Subtweak",
+                .product(name: "CustomDump", package: "swift-custom-dump"),
             ]
         ),
     ]

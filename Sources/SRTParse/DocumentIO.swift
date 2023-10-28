@@ -24,6 +24,11 @@ public func printSRT(srtSubs: SRTSubs) throws -> String {
 public struct SRTSubs {
     public var subs: Subs
     public var newlineMode: NewlineMode
+
+    public init(subs: Subs, newlineMode: NewlineMode) {
+        self.subs = subs
+        self.newlineMode = newlineMode
+    }
 }
 
 public struct InputSRTFormat: Equatable {
