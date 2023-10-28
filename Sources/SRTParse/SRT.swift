@@ -14,12 +14,12 @@ import Parsing
 
  */
 
-struct Timestamp: Equatable {
-    var hours: Int
-    var minutes: Int
-    var seconds: Int
-    var fraction: Int
-    var fractionDigitCount: Int
+public struct Timestamp: Equatable {
+    public var hours: Int
+    public var minutes: Int
+    public var seconds: Int
+    public var fraction: Int
+    public var fractionDigitCount: Int
 }
 
 struct Subtitle: Equatable {
@@ -29,7 +29,7 @@ struct Subtitle: Equatable {
     var text: String
 }
 
-let timestamp = ParsePrint(input: Substring.self) {
+public let timestamp = ParsePrint(input: Substring.self) {
     Digits(2)
     ":"
     Digits(2)

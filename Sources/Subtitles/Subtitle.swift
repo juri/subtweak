@@ -14,6 +14,10 @@ public struct Sub: Equatable {
         self.start = start
         self.text = text
     }
+
+    public var end: Duration {
+        self.start + self.duration
+    }
 }
 
 public struct Subs: Equatable {

@@ -7,19 +7,35 @@ let package = Package(
     name: "Subtweak",
     platforms: [.macOS(.v14)],
     products: [
-        // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
-            name: "Subtweak",
-            targets: ["Subtweak"]
+            name: "SubtweakLib",
+            targets: [
+                "Subtweak",
+            ]
+        ),
+        .executable(
+            name: "subtweak",
+            targets: [
+                "CLI",
+            ]
         ),
     ],
     dependencies: [
+        .package(url: "https://github.com/apple/swift-argument-parser.git", from: "1.2.3"),
         .package(url: "https://github.com/pointfreeco/swift-custom-dump.git", from: "1.1.0"),
         .package(url: "https://github.com/pointfreeco/swift-parsing.git", from: "0.13.0"),
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
+        .executableTarget(
+            name: "CLI",
+            dependencies: [
+                "SRTParse",
+                "Subtweak",
+                .product(name: "ArgumentParser", package: "swift-argument-parser"),
+            ]
+        ),
         .target(
             name: "Subtitles"
         ),

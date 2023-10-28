@@ -27,7 +27,7 @@ extension Subtitle {
     }
 }
 
-extension Timestamp {
+public extension Timestamp {
     var nanoseconds: Int {
         let nanoZeroes: Int = 9
         return self.fraction * power10(nanoZeroes - self.fractionDigitCount)
