@@ -73,11 +73,11 @@ private func magnitude(_ i: Int) -> Int {
 
 let subtitle = ParsePrint(input: Substring.self) {
     Int.parser()
-    "\n"
+    Whitespace(1, .vertical)
     timestamp
     " --> "
     timestamp
-    "\n"
+    Whitespace(1, .vertical)
     PrefixUpTo("\n\n")
     "\n\n"
 }.map(
@@ -91,8 +91,73 @@ let subtitle = ParsePrint(input: Substring.self) {
     )
 )
 
+struct Subtext<Input: Collection>: Parser where Input.SubSequence == Input, Input.Element == Character {
+    func parse(_ input: inout Input) throws -> Input {
+        let doubleNewlineIndex = input.firstSubsequenceIndex(where: { subs in
+            guard let first = subs.first, let second = subs.dropFirst().first else {
+                return false
+            }
+            let match = (first == "\n" && second == "\n") || (first == "\r\n" && second == "\r\n")
+            return match
+        })
+        guard let doubleNewlineIndex else {
+            let output = input
+            input.removeFirst(output.count)
+            return output
+        }
+
+        let prefix = input[input.startIndex ..< doubleNewlineIndex]
+        input.removeFirst(prefix.count)
+        return prefix
+    }
+}
+
+extension Subtext: ParserPrinter where Input: PrependableCollection {
+    func print(_ output: Input, into input: inout Input) throws {
+        input.prepend(contentsOf: "\n\n")
+        input.prepend(contentsOf: output)
+    }
+}
+
+extension Collection {
+    func firstSubsequenceIndex(where test: (SubSequence) -> Bool) -> Self.Index? {
+        for index in self.indices {
+            if test(self[index...]) {
+                return index
+            }
+        }
+        return nil
+    }
+}
+
+let srtNewline = OneOf {
+    "\r\n"
+    "\n"
+}
+
+let subtitle_ = ParsePrint(input: Substring.self) {
+    Int.parser()
+    srtNewline
+    timestamp
+    " --> "
+    timestamp
+    srtNewline
+    Subtext()
+    srtNewline
+    srtNewline
+}.map(
+    AnyConversion(
+        apply: { n, s, e, t in
+            Subtitle(number: n, start: s, end: e, text: String(t))
+        },
+        unapply: { subtitle in
+            (subtitle.number, subtitle.start, subtitle.end, subtitle.text[...])
+        }
+    )
+)
+
 let subtitles = Many {
-    subtitle
+    subtitle_
 }
 
 let subtitlesDocument = ParsePrint {
