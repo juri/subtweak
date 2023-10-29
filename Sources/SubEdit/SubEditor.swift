@@ -29,10 +29,8 @@ public extension SubEditor {
 
 public extension SubEditor {
     mutating func remove(number: Int) throws {
+        try self.checkNumber(number)
         let index = number - 1
-        guard index < self.srtSubs.subs.entries.endIndex else {
-            throw SubtitleNumberError(numberOfEntries: self.srtSubs.subs.entries.count)
-        }
         self.srtSubs.subs.entries.remove(at: index)
     }
 
@@ -40,10 +38,8 @@ public extension SubEditor {
         guard newStart.components.seconds >= 0 && newStart.components.attoseconds >= 0 else {
             throw InvalidDurationError(duration: newStart)
         }
+        try self.checkNumber(number)
         let index = number - 1
-        guard index < self.srtSubs.subs.entries.endIndex else {
-            throw SubtitleNumberError(numberOfEntries: self.srtSubs.subs.entries.count)
-        }
         var entries = self.srtSubs.subs.entries
         if newStart < entries[index].start && index > 0 && entries[index - 1].end > newStart {
             throw TimeOverlapError(
@@ -78,10 +74,27 @@ public extension SubEditor {
     }
 }
 
+private extension SubEditor {
+    private func checkNumber(_ number: Int) throws {
+        guard number > 0 && number <= self.srtSubs.subs.entries.endIndex else {
+            throw SubtitleNumberError(
+                number: number,
+                numberOfEntries: self.srtSubs.subs.entries.count
+            )
+        }
+    }
+}
+
 public struct EncodingError: Error {}
 
-public struct SubtitleNumberError: Error {
-    var numberOfEntries: Int
+public struct SubtitleNumberError: Error, Equatable {
+    public var number: Int
+    public var numberOfEntries: Int
+
+    public init(number: Int, numberOfEntries: Int) {
+        self.number = number
+        self.numberOfEntries = numberOfEntries
+    }
 }
 
 public struct TimeOverlapError: Error, Equatable {

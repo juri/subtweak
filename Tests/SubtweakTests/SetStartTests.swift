@@ -123,4 +123,42 @@ final class SetStartTests: XCTestCase {
             ]
         )
     }
+
+    func testSetStartTooSmallNumber() {
+        var editor = SubEditor(
+            srtSubs: SRTSubs(
+                subs: Subs(entries: [
+                    Sub(start: Duration.seconds(1), duration: Duration.seconds(1), text: "s1"),
+                    Sub(start: Duration.seconds(3), duration: Duration.seconds(1), text: "s2"),
+                ]),
+                newlineMode: .lf
+            )
+        )
+        XCTAssertThrowsError(try editor.setStart(number: 0, at: .seconds(3), shouldAdjustRest: true)) { error in
+            guard let numberError = error as? SubtitleNumberError else {
+                XCTFail("Unexpected error \(error)")
+                return
+            }
+            XCTAssertEqual(numberError, SubtitleNumberError(number: 0, numberOfEntries: 2))
+        }
+    }
+
+    func testSetStartTooLargeNumber() {
+        var editor = SubEditor(
+            srtSubs: SRTSubs(
+                subs: Subs(entries: [
+                    Sub(start: Duration.seconds(1), duration: Duration.seconds(1), text: "s1"),
+                    Sub(start: Duration.seconds(3), duration: Duration.seconds(1), text: "s2"),
+                ]),
+                newlineMode: .lf
+            )
+        )
+        XCTAssertThrowsError(try editor.setStart(number: 3, at: .seconds(3), shouldAdjustRest: true)) { error in
+            guard let numberError = error as? SubtitleNumberError else {
+                XCTFail("Unexpected error \(error)")
+                return
+            }
+            XCTAssertEqual(numberError, SubtitleNumberError(number: 3, numberOfEntries: 2))
+        }
+    }
 }
