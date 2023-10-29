@@ -47,4 +47,32 @@ final class SetStartTests: XCTestCase {
             XCTAssertEqual(durationError, InvalidDurationError(duration: .seconds(-1)))
         }
     }
+
+    func testSetStartOverlapPrevious() {
+        var editor = SubEditor(
+            srtSubs: SRTSubs(
+                subs: Subs(entries: [
+                    Sub(start: Duration.seconds(1), duration: Duration.seconds(1), text: "s1"),
+                    Sub(start: Duration.seconds(3), duration: Duration.seconds(1), text: "s2"),
+                ]),
+                newlineMode: .lf
+            )
+        )
+        XCTAssertThrowsError(try editor.setStart(number: 2, at: .seconds(1), shouldAdjustRest: false)) { error in
+            guard let overlapError = error as? TimeOverlapError else {
+                XCTFail("Unexpected error \(error)")
+                return
+            }
+            XCTAssertEqual(
+                overlapError,
+                TimeOverlapError(
+                    targetNumber: 2,
+                    targetSub: Sub(start: Duration.seconds(3), duration: Duration.seconds(1), text: "s2"),
+                    requestedStart: .seconds(1),
+                    overlappingNumber: 1,
+                    overlappingSub: Sub(start: Duration.seconds(1), duration: Duration.seconds(1), text: "s1")
+                )
+            )
+        }
+    }
 }
