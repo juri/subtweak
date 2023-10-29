@@ -52,10 +52,8 @@ public extension SubEditor {
     ///     - shouldAdjustRest: Flag that tells if the start times of the subtitles following this one
     ///            should be adjusted with the difference between the old and new start times.
     mutating func setStart(number: Int, at newStart: Duration, shouldAdjustRest: Bool) throws {
-        guard newStart.components.seconds >= 0 && newStart.components.attoseconds >= 0 else {
-            throw InvalidDurationError(duration: newStart)
-        }
         try self.checkNumber(number)
+        try checkDuration(newStart)
         let index = number - 1
         var entries = self.srtSubs.subs.entries
         if newStart < entries[index].start && index > 0 && entries[index - 1].end > newStart {
@@ -99,6 +97,12 @@ private extension SubEditor {
                 numberOfEntries: self.srtSubs.subs.entries.count
             )
         }
+    }
+}
+
+private func checkDuration(_ duration: Duration) throws {
+    guard duration.components.seconds >= 0 && duration.components.attoseconds >= 0 else {
+        throw InvalidDurationError(duration: duration)
     }
 }
 
