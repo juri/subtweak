@@ -19,3 +19,23 @@ Run `subtweak --help` to see a list of subcommands and their options.
 ## Library
 
 The Swift library `SubtweakLib` allows you to perform the same operations as the command line.
+
+## Installation
+
+You can install the tool on macOS or Linux by using [Mint] as follows
+
+```sh
+$ mint install juri/subtweak@main
+```
+
+Or you can use Swift Package Manager manually:
+
+```sh
+$ git clone https://github.com/juri/subtweak
+$ cd subtweak
+$ swift build -c release
+$ sudo cp .build/release/subtweak /usr/local/bin
+```
+
+[Mint]: https://github.com/yonaskolb/Mint
+
