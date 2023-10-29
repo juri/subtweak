@@ -1,6 +1,6 @@
 # Subtweak
 
-Subtweak is a command line tool and a Swift library for working with SRT subtitle files.
+Subtweak is a command line tool and a Swift library for working with [SRT] subtitle files.
 
 ## Features
 
@@ -37,5 +37,5 @@ $ swift build -c release
 $ sudo cp .build/release/subtweak /usr/local/bin
 ```
 
+[SRT]: https://en.wikipedia.org/wiki/SubRip
 [Mint]: https://github.com/yonaskolb/Mint
-
