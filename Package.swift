@@ -10,7 +10,7 @@ let package = Package(
         .library(
             name: "SubtweakLib",
             targets: [
-                "Subtweak",
+                "SubEdit",
             ]
         ),
         .executable(
@@ -32,7 +32,7 @@ let package = Package(
             name: "CLI",
             dependencies: [
                 "SRTParse",
-                "Subtweak",
+                "SubEdit",
                 .product(name: "ArgumentParser", package: "swift-argument-parser"),
             ]
         ),
@@ -40,7 +40,7 @@ let package = Package(
             name: "Subtitles"
         ),
         .target(
-            name: "Subtweak",
+            name: "SubEdit",
             dependencies: [
                 "SRTParse",
                 "Subtitles",
@@ -64,7 +64,7 @@ let package = Package(
             name: "SubtweakTests",
             dependencies: [
                 "SRTParse",
-                "Subtweak",
+                "SubEdit",
                 .product(name: "CustomDump", package: "swift-custom-dump"),
             ]
         ),

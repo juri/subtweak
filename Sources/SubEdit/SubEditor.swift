@@ -51,7 +51,7 @@ public extension SubEditor {
                 overlappingSub: entries[index - 1]
             )
         }
-        if newStart > entries[index].start && 
+        if newStart > entries[index].start &&
             index < entries.index(before: entries.endIndex) &&
             !shouldAdjustRest &&
             newStart > entries[index + 1].start

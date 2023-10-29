@@ -1,6 +1,6 @@
 import CustomDump
 import SRTParse
-import Subtweak
+import SubEdit
 import XCTest
 
 final class RemoveTests: XCTestCase {

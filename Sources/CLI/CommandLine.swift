@@ -1,7 +1,7 @@
 import ArgumentParser
 import Foundation
 import SRTParse
-import Subtweak
+import SubEdit
 
 @main
 struct Edit: ParsableCommand {
