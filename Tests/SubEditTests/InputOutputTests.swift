@@ -8,7 +8,7 @@ final class InputOutputTests: XCTestCase {
         try await inTemporaryDirectory { tempDir in
             let bytes: [UInt8] = [0xC3, 0x28]
             let data = Data(bytes)
-            let srtLocation = tempDir.appending(path: "invalid.srt", directoryHint: .notDirectory)
+            let srtLocation = tempDir.appendingPathComponent("invalid.srt", isDirectory: false)
             try data.write(to: srtLocation)
             XCTAssertThrowsError(try SubEditor(source: .url(srtLocation))) { error in
                 guard let decodingError = error as? InputDecodingError else {
@@ -34,7 +34,7 @@ final class InputOutputTests: XCTestCase {
 
 
             """
-            let srtLocation = tempDir.appending(path: "test.srt", directoryHint: .notDirectory)
+            let srtLocation = tempDir.appendingPathComponent("test.srt", isDirectory: false)
             try Data(srt.utf8).write(to: srtLocation)
             let editor = try SubEditor(source: .url(srtLocation))
 
@@ -51,7 +51,7 @@ final class InputOutputTests: XCTestCase {
             )
             XCTAssertNoDifference(editor.srtSubs.newlineMode, .lf)
 
-            let saveLocation = tempDir.appending(path: "save.srt", directoryHint: .notDirectory)
+            let saveLocation = tempDir.appendingPathComponent("save.srt", isDirectory: false)
             try editor.write(target: .url(saveLocation))
             let writtenData = try Data(contentsOf: saveLocation)
 
@@ -73,7 +73,7 @@ final class InputOutputTests: XCTestCase {
             \r
 
             """
-            let srtLocation = tempDir.appending(path: "test.srt", directoryHint: .notDirectory)
+            let srtLocation = tempDir.appendingPathComponent("test.srt", isDirectory: false)
             try Data(srt.utf8).write(to: srtLocation)
             let editor = try SubEditor(source: .url(srtLocation))
 
@@ -90,7 +90,7 @@ final class InputOutputTests: XCTestCase {
             )
             XCTAssertNoDifference(editor.srtSubs.newlineMode, .crLF)
 
-            let saveLocation = tempDir.appending(path: "save.srt", directoryHint: .notDirectory)
+            let saveLocation = tempDir.appendingPathComponent("save.srt", isDirectory: false)
             try editor.write(target: .url(saveLocation))
             let writtenData = try Data(contentsOf: saveLocation)
 
