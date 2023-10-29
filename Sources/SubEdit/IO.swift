@@ -1,7 +1,11 @@
 import Foundation
 
+/// Input source for subtitle editing.
 public enum Input: Equatable {
+    /// Read from standard input.
     case stdin
+
+    /// Read from a file URL.
     case url(URL)
 
     func read() throws -> Data {
@@ -14,8 +18,12 @@ public enum Input: Equatable {
     }
 }
 
+/// Output target for saving edited subtitles.
 public enum Output: Equatable {
+    /// Write to standard output.
     case stdout
+
+    /// Write to a file URL.
     case url(URL)
 
     func write(data: Data) throws {

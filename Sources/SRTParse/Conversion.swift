@@ -28,11 +28,13 @@ extension Subtitle {
 }
 
 public extension Timestamp {
+    /// The fractional second value of a Timestamp in nanoseconds.
     var nanoseconds: Int {
         let nanoZeroes: Int = 9
         return self.fraction * power10(nanoZeroes - self.fractionDigitCount)
     }
 
+    /// Timestamp as a `Duration`.
     var duration: Duration {
         Duration.seconds(self.hours * 60 * 60)
             + Duration.seconds(self.minutes * 60)
@@ -40,6 +42,7 @@ public extension Timestamp {
             + Duration.nanoseconds(self.nanoseconds)
     }
 
+    /// Create a Timestamp from a Duration.
     init(_ duration: Duration) {
         let seconds = duration.components.seconds
 

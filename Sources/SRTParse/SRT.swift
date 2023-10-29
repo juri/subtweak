@@ -14,6 +14,7 @@ import Parsing
 
  */
 
+/// A decoded SRT timestamp.
 public struct Timestamp: Equatable {
     public var hours: Int
     public var minutes: Int
@@ -29,6 +30,7 @@ struct Subtitle: Equatable {
     var text: String
 }
 
+/// Parser for a SRT timestamp.
 public let timestamp = ParsePrint(input: Substring.self) {
     Digits(2)
     ":"

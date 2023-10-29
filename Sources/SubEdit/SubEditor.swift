@@ -2,13 +2,16 @@ import Foundation
 import SRTParse
 @_exported import Subtitles
 
+/// `SubEditor` reads, edits and writes subtitles.
 public struct SubEditor {
     public private(set) var srtSubs: SRTSubs
 
+    /// Initializes `SubEditor` with subtitles read from a SRT file.
     public init(srtSubs: SRTSubs) {
         self.srtSubs = srtSubs
     }
 
+    /// Write `SubEditor`'s subtitles to an ``Output`` target.
     public func write(target: Output) throws {
         let str = try printSRT(srtSubs: self.srtSubs)
         try target.write(data: Data(str.utf8))
@@ -16,6 +19,7 @@ public struct SubEditor {
 }
 
 public extension SubEditor {
+    /// Initialize `SubEditor` with SRT data from an ``Input``.
     init(source: Input) throws {
         let data = try source.read()
         guard let string = String(data: data, encoding: .utf8) else {
@@ -28,12 +32,25 @@ public extension SubEditor {
 }
 
 public extension SubEditor {
+    /// Remove a subtitle.
+    ///
+    /// - Parameter number: Subtitle number. The numbering starts at 1.
     mutating func remove(number: Int) throws {
         try self.checkNumber(number)
         let index = number - 1
         self.srtSubs.subs.entries.remove(at: index)
     }
 
+    /// Set the start time of a subtitle.
+    ///
+    /// The start time is sanity checked so that it does not overlap the end time of the preceding subtitle and the new end
+    /// time does not overlap the start time of the next subtitle.
+    ///
+    /// - Parameters:
+    ///     - number: Subtitle number. The numbering starts at 1.
+    ///     - newStart: New start time.
+    ///     - shouldAdjustRest: Flag that tells if the start times of the subtitles following this one
+    ///            should be adjusted with the difference between the old and new start times.
     mutating func setStart(number: Int, at newStart: Duration, shouldAdjustRest: Bool) throws {
         guard newStart.components.seconds >= 0 && newStart.components.attoseconds >= 0 else {
             throw InvalidDurationError(duration: newStart)
@@ -85,6 +102,7 @@ private extension SubEditor {
     }
 }
 
+/// Error thrown when decoding of the input as UTF-8 fails.
 public struct InputDecodingError: Error, Equatable {
     public var input: Input
 
@@ -93,6 +111,7 @@ public struct InputDecodingError: Error, Equatable {
     }
 }
 
+/// Error thrown when an invalid subtitle number is specified.
 public struct SubtitleNumberError: Error, Equatable {
     public var number: Int
     public var numberOfEntries: Int
@@ -103,6 +122,7 @@ public struct SubtitleNumberError: Error, Equatable {
     }
 }
 
+/// Error thrown when editor operation would result in overlapping subtitle times.
 public struct TimeOverlapError: Error, Equatable {
     public var targetNumber: Int
     public var targetSub: Sub
@@ -125,6 +145,9 @@ public struct TimeOverlapError: Error, Equatable {
     }
 }
 
+/// Error thrown when an invalid duration is specified.
+///
+/// In practice this means the duration had negative values.
 public struct InvalidDurationError: Error, Equatable {
     public var duration: Duration
 

@@ -1,6 +1,7 @@
 import Foundation
 import Subtitles
 
+/// Parse a SRT document.
 public func parseSRT(string: String) throws -> SRTSubs {
     let newlineMode = detectNewlineMode(string)
     var string = string
@@ -12,6 +13,7 @@ public func parseSRT(string: String) throws -> SRTSubs {
     )
 }
 
+/// Print a SRT document.
 public func printSRT(srtSubs: SRTSubs) throws -> String {
     let subtitles = Subtitle.subtitles(from: srtSubs.subs)
     let str = String(try subtitlesDocument.print(subtitles))
@@ -21,8 +23,11 @@ public func printSRT(srtSubs: SRTSubs) throws -> String {
     return str.replacingOccurrences(of: "\n", with: "\r\n")
 }
 
+/// A parsed SRT document.
 public struct SRTSubs {
+    /// The subtitles contained in the SRT document.
     public var subs: Subs
+    /// The newline format used in the SRT document.
     public var newlineMode: NewlineMode
 
     public init(subs: Subs, newlineMode: NewlineMode) {
@@ -31,8 +36,12 @@ public struct SRTSubs {
     }
 }
 
+/// The newline format used in a SRT document.
 public enum NewlineMode {
+    /// CR LF newlines.
     case crLF
+
+    /// LF newlines.
     case lf
 }
 
