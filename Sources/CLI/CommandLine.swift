@@ -137,7 +137,8 @@ struct FileURL {
     var url: URL
 
     init(from string: String) throws {
-        let url = URL(filePath: string, directoryHint: .notDirectory)
+        // the new URL(filePath:directoryHint:) is not available on Linux
+        let url = URL(fileURLWithPath: string, isDirectory: false)
         guard url.isFileURL else {
             throw ValidationError("Could not be parsed as path")
         }
