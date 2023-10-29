@@ -60,7 +60,7 @@ public extension SubEditor {
             throw TimeOverlapError(
                 targetNumber: number,
                 targetSub: entries[index],
-                requestedStart: newStart,
+                requestedTime: .start(newStart),
                 overlappingNumber: number - 1,
                 overlappingSub: entries[index - 1]
             )
@@ -73,7 +73,7 @@ public extension SubEditor {
             throw TimeOverlapError(
                 targetNumber: number,
                 targetSub: entries[index],
-                requestedStart: newStart,
+                requestedTime: .start(newStart),
                 overlappingNumber: number + 1,
                 overlappingSub: entries[index + 1]
             )
@@ -128,22 +128,27 @@ public struct SubtitleNumberError: Error, Equatable {
 
 /// Error thrown when editor operation would result in overlapping subtitle times.
 public struct TimeOverlapError: Error, Equatable {
+    public enum TimeField: Equatable {
+        case start(Duration)
+        case duration(Duration)
+    }
+
     public var targetNumber: Int
     public var targetSub: Sub
-    public var requestedStart: Duration
+    public var requestedTime: TimeField
     public var overlappingNumber: Int
     public var overlappingSub: Sub
 
     public init(
         targetNumber: Int,
         targetSub: Sub,
-        requestedStart: Duration,
+        requestedTime: TimeField,
         overlappingNumber: Int,
         overlappingSub: Sub
     ) {
         self.targetNumber = targetNumber
         self.targetSub = targetSub
-        self.requestedStart = requestedStart
+        self.requestedTime = requestedTime
         self.overlappingNumber = overlappingNumber
         self.overlappingSub = overlappingSub
     }

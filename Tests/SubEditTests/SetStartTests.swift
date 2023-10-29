@@ -68,7 +68,7 @@ final class SetStartTests: XCTestCase {
                 TimeOverlapError(
                     targetNumber: 2,
                     targetSub: Sub(start: Duration.seconds(3), duration: Duration.seconds(1), text: "s2"),
-                    requestedStart: .seconds(1),
+                    requestedTime: .start(.seconds(1)),
                     overlappingNumber: 1,
                     overlappingSub: Sub(start: Duration.seconds(1), duration: Duration.seconds(1), text: "s1")
                 )
@@ -96,7 +96,7 @@ final class SetStartTests: XCTestCase {
                 TimeOverlapError(
                     targetNumber: 1,
                     targetSub: Sub(start: Duration.seconds(1), duration: Duration.seconds(1), text: "s1"),
-                    requestedStart: .seconds(3),
+                    requestedTime: .start(.seconds(3)),
                     overlappingNumber: 2,
                     overlappingSub: Sub(start: Duration.seconds(3), duration: Duration.seconds(1), text: "s2")
                 )
