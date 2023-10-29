@@ -37,6 +37,9 @@ public extension SubEditor {
     }
 
     mutating func setStart(number: Int, at newStart: Duration, shouldAdjustRest: Bool) throws {
+        guard newStart.components.seconds >= 0 && newStart.components.attoseconds >= 0 else {
+            throw InvalidDurationError(duration: newStart)
+        }
         let index = number - 1
         guard index < self.srtSubs.subs.entries.endIndex else {
             throw SubtitleNumberError(numberOfEntries: self.srtSubs.subs.entries.count)
@@ -87,4 +90,12 @@ public struct TimeOverlapError: Error {
     var requestedStart: Duration
     var overlappingIndex: Int
     var overlappingSub: Sub
+}
+
+public struct InvalidDurationError: Error, Equatable {
+    public var duration: Duration
+
+    public init(duration: Duration) {
+        self.duration = duration
+    }
 }
