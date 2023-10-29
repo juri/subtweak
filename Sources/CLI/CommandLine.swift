@@ -128,7 +128,7 @@ struct SetEnd: ParsableCommand {
 
 struct ListGaps: ParsableCommand {
     static var configuration = CommandConfiguration(
-        abstract: "List gaps following subtitles in range",
+        abstract: "List gaps following subtitles in range.",
         discussion: "Finds the subtitles in the specified range and lists the gaps after them."
     )
 
