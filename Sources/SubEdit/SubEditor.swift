@@ -47,10 +47,10 @@ public extension SubEditor {
         var entries = self.srtSubs.subs.entries
         if newStart < entries[index].start && index > 0 && entries[index - 1].end > newStart {
             throw TimeOverlapError(
-                targetIndex: index,
+                targetNumber: number,
                 targetSub: entries[index],
                 requestedStart: newStart,
-                overlappingIndex: index - 1,
+                overlappingNumber: number - 1,
                 overlappingSub: entries[index - 1]
             )
         }
@@ -60,10 +60,10 @@ public extension SubEditor {
             newStart > entries[index + 1].start
         {
             throw TimeOverlapError(
-                targetIndex: index,
+                targetNumber: number,
                 targetSub: entries[index],
                 requestedStart: newStart,
-                overlappingIndex: index + 1,
+                overlappingNumber: number + 1,
                 overlappingSub: entries[index + 1]
             )
         }
@@ -84,12 +84,26 @@ public struct SubtitleNumberError: Error {
     var numberOfEntries: Int
 }
 
-public struct TimeOverlapError: Error {
-    var targetIndex: Int
-    var targetSub: Sub
-    var requestedStart: Duration
-    var overlappingIndex: Int
-    var overlappingSub: Sub
+public struct TimeOverlapError: Error, Equatable {
+    public var targetNumber: Int
+    public var targetSub: Sub
+    public var requestedStart: Duration
+    public var overlappingNumber: Int
+    public var overlappingSub: Sub
+
+    public init(
+        targetNumber: Int,
+        targetSub: Sub,
+        requestedStart: Duration,
+        overlappingNumber: Int,
+        overlappingSub: Sub
+    ) {
+        self.targetNumber = targetNumber
+        self.targetSub = targetSub
+        self.requestedStart = requestedStart
+        self.overlappingNumber = overlappingNumber
+        self.overlappingSub = overlappingSub
+    }
 }
 
 public struct InvalidDurationError: Error, Equatable {
