@@ -126,6 +126,53 @@ public extension SubEditor {
         }
         self.srtSubs.subs.entries = entries
     }
+
+    /// Set the end time of a subtitle.
+    ///
+    /// - Parameters:
+    ///     - number: Subtitle number. The numbering starts at 1.
+    ///     - newEnd: New end time.
+    ///     - shouldAdjustRest: Flag that tells if the start times of the subtitles following this one
+    ///            should be adjusted with the difference between the old and new durations.
+    mutating func setEnd(number: Int, at newEnd: Duration, shouldAdjustRest: Bool) throws {
+        try self.checkNumber(number)
+        try checkDuration(newEnd)
+
+        let index = number - 1
+        var entries = self.srtSubs.subs.entries
+        if newEnd < entries[index].start {
+            throw TimeOverlapError(
+                targetNumber: number,
+                targetSub: entries[index],
+                requestedTime: .end(newEnd),
+                overlappingNumber: number,
+                overlappingSub: entries[index]
+            )
+        }
+
+        if newEnd > entries[index].end &&
+            index < entries.index(before: entries.endIndex) &&
+            !shouldAdjustRest &&
+            newEnd >= entries[index + 1].start
+        {
+            throw TimeOverlapError(
+                targetNumber: number,
+                targetSub: entries[index],
+                requestedTime: .end(newEnd),
+                overlappingNumber: number + 1,
+                overlappingSub: entries[index + 1]
+            )
+        }
+
+        let difference = newEnd - entries[index].end
+        entries[index].duration += difference
+        if shouldAdjustRest {
+            for index in entries.indices.dropFirst(index + 1) {
+                entries[index].start += difference
+            }
+        }
+        self.srtSubs.subs.entries = entries
+    }
 }
 
 private extension SubEditor {
@@ -170,6 +217,7 @@ public struct TimeOverlapError: Error, Equatable {
     public enum TimeField: Equatable {
         case start(Duration)
         case duration(Duration)
+        case end(Duration)
     }
 
     public var targetNumber: Int

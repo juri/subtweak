@@ -8,7 +8,7 @@ struct Edit: ParsableCommand {
     static var configuration = CommandConfiguration(
         commandName: "subtweak",
         abstract: "Edit SRT file.",
-        subcommands: [Remove.self, SetDuration.self, SetStart.self]
+        subcommands: [Remove.self, SetDuration.self, SetEnd.self, SetStart.self]
     )
 }
 
@@ -61,8 +61,10 @@ struct SetStart: ParsableCommand {
 }
 
 struct SetDuration: ParsableCommand {
-    static var configuration
-        = CommandConfiguration(abstract: "Set the duration of an entry.")
+    static var configuration = CommandConfiguration(
+        abstract: "Set the duration of an entry.",
+        discussion: "See also set-end to set the end with a time stamp."
+    )
 
     @OptionGroup
     var numberOption: NumberOption
@@ -84,6 +86,39 @@ struct SetDuration: ParsableCommand {
         try editor.setDuration(
             number: self.numberOption.number,
             duration: self.duration,
+            shouldAdjustRest: self.adjustRest
+        )
+
+        try editor.write(target: output)
+    }
+}
+
+struct SetEnd: ParsableCommand {
+    static var configuration = CommandConfiguration(
+        abstract: "Set the end time of an entry.",
+        discussion: "See also set-duration to set the end relative to the start of the subtitle."
+    )
+
+    @OptionGroup
+    var numberOption: NumberOption
+
+    @Argument(help: "New end time", transform: parseDuration(_:))
+    var endTime: Duration
+
+    @Flag(inversion: .prefixedNo, help: "Adjust the times of the following entries")
+    var adjustRest: Bool = true
+
+    @OptionGroup
+    var inputOutputOptions: InputOutputOptions
+
+    mutating func run() throws {
+        let input = try inputOutputOptions.input()
+        let output = try inputOutputOptions.output()
+
+        var editor = try SubEditor(source: input)
+        try editor.setEnd(
+            number: self.numberOption.number,
+            at: self.endTime,
             shouldAdjustRest: self.adjustRest
         )
 
