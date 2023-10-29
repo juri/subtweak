@@ -17,7 +17,7 @@ final class ListGapsTests: XCTestCase {
         ]
         let editor = SubEditor(
             srtSubs: SRTSubs(
-                subs: Subs(entries: subs),
+                subs: subs,
                 newlineMode: .lf
             )
         )
@@ -46,7 +46,7 @@ final class ListGapsTests: XCTestCase {
         ]
         let editor = SubEditor(
             srtSubs: SRTSubs(
-                subs: Subs(entries: subs),
+                subs: subs,
                 newlineMode: .lf
             )
         )
@@ -71,7 +71,7 @@ final class ListGapsTests: XCTestCase {
         ]
         let editor = SubEditor(
             srtSubs: SRTSubs(
-                subs: Subs(entries: subs),
+                subs: subs,
                 newlineMode: .lf
             )
         )
@@ -87,7 +87,7 @@ final class ListGapsTests: XCTestCase {
         ]
         let editor = SubEditor(
             srtSubs: SRTSubs(
-                subs: Subs(entries: subs),
+                subs: subs,
                 newlineMode: .lf
             )
         )
@@ -108,7 +108,7 @@ final class ListGapsTests: XCTestCase {
         ]
         let editor = SubEditor(
             srtSubs: SRTSubs(
-                subs: Subs(entries: subs),
+                subs: subs,
                 newlineMode: .lf
             )
         )

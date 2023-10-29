@@ -7,7 +7,7 @@ final class RemoveTests: XCTestCase {
     func testRemoveFirst() throws {
         var editor = SubEditor(
             srtSubs: SRTSubs(
-                subs: Subs(entries: [
+                subs: [
                     Sub(
                         start: Duration(secondsComponent: 1, attosecondsComponent: 0),
                         duration: Duration(secondsComponent: 2, attosecondsComponent: 0),
@@ -18,7 +18,7 @@ final class RemoveTests: XCTestCase {
                         duration: Duration(secondsComponent: 5, attosecondsComponent: 0),
                         text: "s2"
                     ),
-                ]),
+                ],
                 newlineMode: .lf
             )
         )
@@ -26,7 +26,7 @@ final class RemoveTests: XCTestCase {
         try editor.remove(number: 1)
 
         XCTAssertNoDifference(
-            editor.srtSubs.subs.entries,
+            editor.srtSubs.subs,
             [
                 Sub(
                     start: Duration(secondsComponent: 4, attosecondsComponent: 0),
@@ -40,10 +40,10 @@ final class RemoveTests: XCTestCase {
     func testRemoveLast() throws {
         var editor = SubEditor(
             srtSubs: SRTSubs(
-                subs: Subs(entries: [
+                subs: [
                     Sub(start: Duration.seconds(1), duration: Duration.seconds(1), text: "s1"),
                     Sub(start: Duration.seconds(3), duration: Duration.seconds(1), text: "s2"),
-                ]),
+                ],
                 newlineMode: .lf
             )
         )
@@ -51,7 +51,7 @@ final class RemoveTests: XCTestCase {
         try editor.remove(number: 2)
 
         XCTAssertNoDifference(
-            editor.srtSubs.subs.entries,
+            editor.srtSubs.subs,
             [Sub(start: Duration.seconds(1), duration: Duration.seconds(1), text: "s1")]
         )
     }
@@ -59,10 +59,10 @@ final class RemoveTests: XCTestCase {
     func testRemoveTooSmallNumber() {
         var editor = SubEditor(
             srtSubs: SRTSubs(
-                subs: Subs(entries: [
+                subs: [
                     Sub(start: Duration.seconds(1), duration: Duration.seconds(1), text: "s1"),
                     Sub(start: Duration.seconds(3), duration: Duration.seconds(1), text: "s2"),
-                ]),
+                ],
                 newlineMode: .lf
             )
         )
@@ -78,10 +78,10 @@ final class RemoveTests: XCTestCase {
     func testRemoveTooLargeNumber() {
         var editor = SubEditor(
             srtSubs: SRTSubs(
-                subs: Subs(entries: [
+                subs: [
                     Sub(start: Duration.seconds(1), duration: Duration.seconds(1), text: "s1"),
                     Sub(start: Duration.seconds(3), duration: Duration.seconds(1), text: "s2"),
-                ]),
+                ],
                 newlineMode: .lf
             )
         )

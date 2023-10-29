@@ -39,7 +39,7 @@ final class InputOutputTests: XCTestCase {
             let editor = try SubEditor(source: .url(srtLocation))
 
             XCTAssertNoDifference(
-                editor.srtSubs.subs.entries,
+                editor.srtSubs.subs,
                 [
                     Sub(start: .milliseconds(60023), duration: .milliseconds(2433), text: "Nothing to be done."),
                     Sub(
@@ -78,7 +78,7 @@ final class InputOutputTests: XCTestCase {
             let editor = try SubEditor(source: .url(srtLocation))
 
             XCTAssertNoDifference(
-                editor.srtSubs.subs.entries,
+                editor.srtSubs.subs,
                 [
                     Sub(start: .milliseconds(60023), duration: .milliseconds(2433), text: "Nothing to be done."),
                     Sub(

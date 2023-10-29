@@ -7,10 +7,10 @@ final class SetDurationTests: XCTestCase {
     func testSetDurationNegative() {
         var editor = SubEditor(
             srtSubs: SRTSubs(
-                subs: Subs(entries: [
+                subs: [
                     Sub(start: Duration.seconds(1), duration: Duration.seconds(1), text: "s1"),
                     Sub(start: Duration.seconds(3), duration: Duration.seconds(1), text: "s2"),
-                ]),
+                ],
                 newlineMode: .lf
             )
         )
@@ -28,10 +28,10 @@ final class SetDurationTests: XCTestCase {
     func testDurationTooSmallNumber() {
         var editor = SubEditor(
             srtSubs: SRTSubs(
-                subs: Subs(entries: [
+                subs: [
                     Sub(start: Duration.seconds(1), duration: Duration.seconds(1), text: "s1"),
                     Sub(start: Duration.seconds(3), duration: Duration.seconds(1), text: "s2"),
-                ]),
+                ],
                 newlineMode: .lf
             )
         )
@@ -49,10 +49,10 @@ final class SetDurationTests: XCTestCase {
     func testDurationTooLargeNumber() {
         var editor = SubEditor(
             srtSubs: SRTSubs(
-                subs: Subs(entries: [
+                subs: [
                     Sub(start: Duration.seconds(1), duration: Duration.seconds(1), text: "s1"),
                     Sub(start: Duration.seconds(3), duration: Duration.seconds(1), text: "s2"),
-                ]),
+                ],
                 newlineMode: .lf
             )
         )
@@ -70,10 +70,10 @@ final class SetDurationTests: XCTestCase {
     func testSetDurationOverlap() {
         var editor = SubEditor(
             srtSubs: SRTSubs(
-                subs: Subs(entries: [
+                subs: [
                     Sub(start: Duration.seconds(1), duration: Duration.seconds(1), text: "s1"),
                     Sub(start: Duration.seconds(3), duration: Duration.seconds(1), text: "s2"),
-                ]),
+                ],
                 newlineMode: .lf
             )
         )
@@ -100,17 +100,17 @@ final class SetDurationTests: XCTestCase {
     func testSetDurationOverlapAdjust() throws {
         var editor = SubEditor(
             srtSubs: SRTSubs(
-                subs: Subs(entries: [
+                subs: [
                     Sub(start: Duration.seconds(1), duration: Duration.seconds(1), text: "s1"),
                     Sub(start: Duration.seconds(3), duration: Duration.seconds(1), text: "s2"),
-                ]),
+                ],
                 newlineMode: .lf
             )
         )
 
         try editor.setDuration(number: 1, duration: Duration.seconds(3), shouldAdjustRest: true)
         XCTAssertNoDifference(
-            editor.srtSubs.subs.entries,
+            editor.srtSubs.subs,
             [
                 Sub(start: Duration.seconds(1), duration: Duration.seconds(3), text: "s1"),
                 Sub(start: Duration.seconds(5), duration: Duration.seconds(1), text: "s2"),
@@ -121,17 +121,17 @@ final class SetDurationTests: XCTestCase {
     func testSetDuration() throws {
         var editor = SubEditor(
             srtSubs: SRTSubs(
-                subs: Subs(entries: [
+                subs: [
                     Sub(start: Duration.seconds(1), duration: Duration.seconds(1), text: "s1"),
                     Sub(start: Duration.seconds(5), duration: Duration.seconds(1), text: "s2"),
-                ]),
+                ],
                 newlineMode: .lf
             )
         )
 
         try editor.setDuration(number: 1, duration: Duration.seconds(2), shouldAdjustRest: false)
         XCTAssertNoDifference(
-            editor.srtSubs.subs.entries,
+            editor.srtSubs.subs,
             [
                 Sub(start: Duration.seconds(1), duration: Duration.seconds(2), text: "s1"),
                 Sub(start: Duration.seconds(5), duration: Duration.seconds(1), text: "s2"),
@@ -142,17 +142,17 @@ final class SetDurationTests: XCTestCase {
     func testSetDurationAdjust() throws {
         var editor = SubEditor(
             srtSubs: SRTSubs(
-                subs: Subs(entries: [
+                subs: [
                     Sub(start: Duration.seconds(1), duration: Duration.seconds(1), text: "s1"),
                     Sub(start: Duration.seconds(5), duration: Duration.seconds(1), text: "s2"),
-                ]),
+                ],
                 newlineMode: .lf
             )
         )
 
         try editor.setDuration(number: 1, duration: Duration.seconds(2), shouldAdjustRest: true)
         XCTAssertNoDifference(
-            editor.srtSubs.subs.entries,
+            editor.srtSubs.subs,
             [
                 Sub(start: Duration.seconds(1), duration: Duration.seconds(2), text: "s1"),
                 Sub(start: Duration.seconds(6), duration: Duration.seconds(1), text: "s2"),

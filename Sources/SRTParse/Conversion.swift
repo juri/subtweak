@@ -20,8 +20,8 @@ extension Subtitle {
         )
     }
 
-    static func subtitles(from subs: Subs) -> [Subtitle] {
-        subs.entries.enumerated().map { index, sub in
+    static func subtitles(from subs: [Sub]) -> [Subtitle] {
+        subs.enumerated().map { index, sub in
             Subtitle(number: index + 1, sub: sub)
         }
     }

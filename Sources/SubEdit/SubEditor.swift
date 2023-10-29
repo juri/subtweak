@@ -38,7 +38,7 @@ public extension SubEditor {
     mutating func remove(number: Int) throws {
         try self.checkNumber(number)
         let index = number - 1
-        self.srtSubs.subs.entries.remove(at: index)
+        self.srtSubs.subs.remove(at: index)
     }
 
     /// Set the start time of a subtitle.
@@ -55,7 +55,7 @@ public extension SubEditor {
         try self.checkNumber(number)
         try checkDuration(newStart)
         let index = number - 1
-        var entries = self.srtSubs.subs.entries
+        var entries = self.srtSubs.subs
         if newStart < entries[index].start && index > 0 && entries[index - 1].end > newStart {
             throw TimeOverlapError(
                 targetNumber: number,
@@ -85,7 +85,7 @@ public extension SubEditor {
                 entries[index].start += difference
             }
         }
-        self.srtSubs.subs.entries = entries
+        self.srtSubs.subs = entries
     }
 
     /// Set the duration of a subtitle.
@@ -102,7 +102,7 @@ public extension SubEditor {
         try checkDuration(duration)
 
         let index = number - 1
-        var entries = self.srtSubs.subs.entries
+        var entries = self.srtSubs.subs
         if duration > entries[index].duration &&
             index < entries.index(before: entries.endIndex) &&
             !shouldAdjustRest &&
@@ -124,7 +124,7 @@ public extension SubEditor {
                 entries[index].start += difference
             }
         }
-        self.srtSubs.subs.entries = entries
+        self.srtSubs.subs = entries
     }
 
     /// Set the end time of a subtitle.
@@ -139,7 +139,7 @@ public extension SubEditor {
         try checkDuration(newEnd)
 
         let index = number - 1
-        var entries = self.srtSubs.subs.entries
+        var entries = self.srtSubs.subs
         if newEnd < entries[index].start {
             throw TimeOverlapError(
                 targetNumber: number,
@@ -171,7 +171,7 @@ public extension SubEditor {
                 entries[index].start += difference
             }
         }
-        self.srtSubs.subs.entries = entries
+        self.srtSubs.subs = entries
     }
 
     func listGaps(numberRange: ClosedRange<Int>) throws -> [GapListEntry] {
@@ -179,7 +179,7 @@ public extension SubEditor {
         try self.checkNumber(numberRange.upperBound)
         guard numberRange.lowerBound < numberRange.upperBound else { return [] }
 
-        let entries = self.srtSubs.subs.entries
+        let entries = self.srtSubs.subs
         var gapList = [GapListEntry]()
         for number in numberRange.lowerBound ..< numberRange.upperBound {
             let index = number - 1
@@ -207,10 +207,10 @@ public extension SubEditor {
 
 private extension SubEditor {
     private func checkNumber(_ number: Int) throws {
-        guard number > 0 && number <= self.srtSubs.subs.entries.endIndex else {
+        guard number > 0 && number <= self.srtSubs.subs.endIndex else {
             throw SubtitleNumberError(
                 number: number,
-                numberOfEntries: self.srtSubs.subs.entries.count
+                numberOfEntries: self.srtSubs.subs.count
             )
         }
     }

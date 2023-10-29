@@ -7,10 +7,10 @@ final class SetStartTests: XCTestCase {
     func testSetStartBackwardsNoAdjust() throws {
         var editor = SubEditor(
             srtSubs: SRTSubs(
-                subs: Subs(entries: [
+                subs: [
                     Sub(start: Duration.seconds(1), duration: Duration.seconds(1), text: "s1"),
                     Sub(start: Duration.seconds(3), duration: Duration.seconds(1), text: "s2"),
-                ]),
+                ],
                 newlineMode: .lf
             )
         )
@@ -18,7 +18,7 @@ final class SetStartTests: XCTestCase {
         try editor.setStart(number: 1, at: Duration.milliseconds(500), shouldAdjustRest: false)
 
         XCTAssertNoDifference(
-            editor.srtSubs.subs.entries,
+            editor.srtSubs.subs,
             [
                 Sub(start: Duration.milliseconds(500), duration: Duration.seconds(1), text: "s1"),
                 Sub(start: Duration.seconds(3), duration: Duration.seconds(1), text: "s2"),
@@ -29,10 +29,10 @@ final class SetStartTests: XCTestCase {
     func testSetStartNegative() {
         var editor = SubEditor(
             srtSubs: SRTSubs(
-                subs: Subs(entries: [
+                subs: [
                     Sub(start: Duration.seconds(1), duration: Duration.seconds(1), text: "s1"),
                     Sub(start: Duration.seconds(3), duration: Duration.seconds(1), text: "s2"),
-                ]),
+                ],
                 newlineMode: .lf
             )
         )
@@ -51,10 +51,10 @@ final class SetStartTests: XCTestCase {
     func testSetStartOverlapPrevious() {
         var editor = SubEditor(
             srtSubs: SRTSubs(
-                subs: Subs(entries: [
+                subs: [
                     Sub(start: Duration.seconds(1), duration: Duration.seconds(1), text: "s1"),
                     Sub(start: Duration.seconds(3), duration: Duration.seconds(1), text: "s2"),
-                ]),
+                ],
                 newlineMode: .lf
             )
         )
@@ -79,10 +79,10 @@ final class SetStartTests: XCTestCase {
     func testSetStartOverlapNext() {
         var editor = SubEditor(
             srtSubs: SRTSubs(
-                subs: Subs(entries: [
+                subs: [
                     Sub(start: Duration.seconds(1), duration: Duration.seconds(1), text: "s1"),
                     Sub(start: Duration.seconds(3), duration: Duration.seconds(1), text: "s2"),
-                ]),
+                ],
                 newlineMode: .lf
             )
         )
@@ -107,16 +107,16 @@ final class SetStartTests: XCTestCase {
     func testSetStartOverlapNextWithAdjust() throws {
         var editor = SubEditor(
             srtSubs: SRTSubs(
-                subs: Subs(entries: [
+                subs: [
                     Sub(start: Duration.seconds(1), duration: Duration.seconds(1), text: "s1"),
                     Sub(start: Duration.seconds(3), duration: Duration.seconds(1), text: "s2"),
-                ]),
+                ],
                 newlineMode: .lf
             )
         )
         try editor.setStart(number: 1, at: .seconds(3), shouldAdjustRest: true)
         XCTAssertNoDifference(
-            editor.srtSubs.subs.entries,
+            editor.srtSubs.subs,
             [
                 Sub(start: Duration.seconds(3), duration: Duration.seconds(1), text: "s1"),
                 Sub(start: Duration.seconds(5), duration: Duration.seconds(1), text: "s2"),
@@ -127,10 +127,10 @@ final class SetStartTests: XCTestCase {
     func testSetStartTooSmallNumber() {
         var editor = SubEditor(
             srtSubs: SRTSubs(
-                subs: Subs(entries: [
+                subs: [
                     Sub(start: Duration.seconds(1), duration: Duration.seconds(1), text: "s1"),
                     Sub(start: Duration.seconds(3), duration: Duration.seconds(1), text: "s2"),
-                ]),
+                ],
                 newlineMode: .lf
             )
         )
@@ -146,10 +146,10 @@ final class SetStartTests: XCTestCase {
     func testSetStartTooLargeNumber() {
         var editor = SubEditor(
             srtSubs: SRTSubs(
-                subs: Subs(entries: [
+                subs: [
                     Sub(start: Duration.seconds(1), duration: Duration.seconds(1), text: "s1"),
                     Sub(start: Duration.seconds(3), duration: Duration.seconds(1), text: "s2"),
-                ]),
+                ],
                 newlineMode: .lf
             )
         )
@@ -165,18 +165,18 @@ final class SetStartTests: XCTestCase {
     func testSetStartBackwardAdjust() throws {
         var editor = SubEditor(
             srtSubs: SRTSubs(
-                subs: Subs(entries: [
+                subs: [
                     Sub(start: Duration.seconds(1), duration: Duration.seconds(1), text: "s1"),
                     Sub(start: Duration.seconds(3), duration: Duration.seconds(1), text: "s2"),
                     Sub(start: Duration.seconds(5), duration: Duration.seconds(1), text: "s3"),
                     Sub(start: Duration.seconds(7), duration: Duration.seconds(1), text: "s4"),
-                ]),
+                ],
                 newlineMode: .lf
             )
         )
         try editor.setStart(number: 2, at: .seconds(2), shouldAdjustRest: true)
         XCTAssertNoDifference(
-            editor.srtSubs.subs.entries,
+            editor.srtSubs.subs,
             [
                 Sub(start: Duration.seconds(1), duration: Duration.seconds(1), text: "s1"),
                 Sub(start: Duration.seconds(2), duration: Duration.seconds(1), text: "s2"),
@@ -189,18 +189,18 @@ final class SetStartTests: XCTestCase {
     func testSetStartBackwardNoAdjust() throws {
         var editor = SubEditor(
             srtSubs: SRTSubs(
-                subs: Subs(entries: [
+                subs: [
                     Sub(start: Duration.seconds(1), duration: Duration.seconds(1), text: "s1"),
                     Sub(start: Duration.seconds(3), duration: Duration.seconds(1), text: "s2"),
                     Sub(start: Duration.seconds(5), duration: Duration.seconds(1), text: "s3"),
                     Sub(start: Duration.seconds(7), duration: Duration.seconds(1), text: "s4"),
-                ]),
+                ],
                 newlineMode: .lf
             )
         )
         try editor.setStart(number: 1, at: .seconds(0), shouldAdjustRest: false)
         XCTAssertNoDifference(
-            editor.srtSubs.subs.entries,
+            editor.srtSubs.subs,
             [
                 Sub(start: Duration.seconds(0), duration: Duration.seconds(1), text: "s1"),
                 Sub(start: Duration.seconds(3), duration: Duration.seconds(1), text: "s2"),
@@ -213,18 +213,18 @@ final class SetStartTests: XCTestCase {
     func testSetStartForwardAdjust() throws {
         var editor = SubEditor(
             srtSubs: SRTSubs(
-                subs: Subs(entries: [
+                subs: [
                     Sub(start: Duration.seconds(1), duration: Duration.seconds(1), text: "s1"),
                     Sub(start: Duration.seconds(3), duration: Duration.seconds(1), text: "s2"),
                     Sub(start: Duration.seconds(5), duration: Duration.seconds(1), text: "s3"),
                     Sub(start: Duration.seconds(7), duration: Duration.seconds(1), text: "s4"),
-                ]),
+                ],
                 newlineMode: .lf
             )
         )
         try editor.setStart(number: 2, at: .seconds(4), shouldAdjustRest: true)
         XCTAssertNoDifference(
-            editor.srtSubs.subs.entries,
+            editor.srtSubs.subs,
             [
                 Sub(start: Duration.seconds(1), duration: Duration.seconds(1), text: "s1"),
                 Sub(start: Duration.seconds(4), duration: Duration.seconds(1), text: "s2"),
@@ -237,18 +237,18 @@ final class SetStartTests: XCTestCase {
     func testSetStartForwardNoAdjust() throws {
         var editor = SubEditor(
             srtSubs: SRTSubs(
-                subs: Subs(entries: [
+                subs: [
                     Sub(start: Duration.seconds(1), duration: Duration.seconds(1), text: "s1"),
                     Sub(start: Duration.seconds(4), duration: Duration.seconds(1), text: "s2"),
                     Sub(start: Duration.seconds(6), duration: Duration.seconds(1), text: "s3"),
                     Sub(start: Duration.seconds(8), duration: Duration.seconds(1), text: "s4"),
-                ]),
+                ],
                 newlineMode: .lf
             )
         )
         try editor.setStart(number: 1, at: .seconds(2), shouldAdjustRest: false)
         XCTAssertNoDifference(
-            editor.srtSubs.subs.entries,
+            editor.srtSubs.subs,
             [
                 Sub(start: Duration.seconds(2), duration: Duration.seconds(1), text: "s1"),
                 Sub(start: Duration.seconds(4), duration: Duration.seconds(1), text: "s2"),

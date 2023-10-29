@@ -8,7 +8,7 @@ public func parseSRT(string: String) throws -> SRTSubs {
     string = string.replacingOccurrences(of: "\r\n", with: "\n")
     let subtitles = try subtitlesDocument.parse(string)
     return SRTSubs(
-        subs: Subs(entries: subtitles.map(Subtitles.Sub.init(_:))),
+        subs: subtitles.map(Subtitles.Sub.init(_:)),
         newlineMode: newlineMode
     )
 }
@@ -26,11 +26,11 @@ public func printSRT(srtSubs: SRTSubs) throws -> String {
 /// A parsed SRT document.
 public struct SRTSubs {
     /// The subtitles contained in the SRT document.
-    public var subs: Subs
+    public var subs: [Sub]
     /// The newline format used in the SRT document.
     public var newlineMode: NewlineMode
 
-    public init(subs: Subs, newlineMode: NewlineMode) {
+    public init(subs: [Sub], newlineMode: NewlineMode) {
         self.subs = subs
         self.newlineMode = newlineMode
     }

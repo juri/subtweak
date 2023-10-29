@@ -55,7 +55,7 @@ final class ConversionTests: XCTestCase {
     }
 
     func testSubsToSubtitles() throws {
-        let subs = Subs(entries: [
+        let subs = [
             Sub(
                 start: Duration(secondsComponent: 3661, attosecondsComponent: 23_000_000_000_000_000),
                 duration: Duration(secondsComponent: 2, attosecondsComponent: 1_000_000_000_000_000),
@@ -66,7 +66,7 @@ final class ConversionTests: XCTestCase {
                 duration: Duration(secondsComponent: 1, attosecondsComponent: 18_000_000_000_000_000),
                 text: "Hello 2"
             ),
-        ])
+        ]
         let subtitles = Subtitle.subtitles(from: subs)
         XCTAssertNoDifference(
             subtitles,

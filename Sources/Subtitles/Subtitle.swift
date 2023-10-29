@@ -22,12 +22,3 @@ public struct Sub: Equatable {
         self.start + self.duration
     }
 }
-
-/// A list of subtitles.
-public struct Subs: Equatable {
-    public var entries: [Sub]
-
-    public init(entries: [Sub]) {
-        self.entries = entries
-    }
-}
