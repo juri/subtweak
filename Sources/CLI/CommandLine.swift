@@ -6,6 +6,7 @@ import SubEdit
 @main
 struct Edit: ParsableCommand {
     static var configuration = CommandConfiguration(
+        commandName: "subtweak",
         abstract: "Edit SRT file.",
         subcommands: [Remove.self, SetDuration.self, SetStart.self]
     )
