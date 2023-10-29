@@ -115,6 +115,10 @@ struct FileURL {
 }
 
 func parseDuration(_ string: String) throws -> Duration {
-    let ts = try SRTParse.timestamp.parse(string)
-    return ts.duration
+    do {
+        let ts = try SRTParse.timestamp.parse(string)
+        return ts.duration
+    } catch {
+        throw ValidationError("Value should be in SRT timestamp format hh:mm:ss,nnn")
+    }
 }
