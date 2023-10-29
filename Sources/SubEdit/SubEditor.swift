@@ -57,7 +57,7 @@ public extension SubEditor {
         if newStart > entries[index].start &&
             index < entries.index(before: entries.endIndex) &&
             !shouldAdjustRest &&
-            newStart > entries[index + 1].start
+            newStart + entries[index].duration >= entries[index + 1].start
         {
             throw TimeOverlapError(
                 targetNumber: number,
