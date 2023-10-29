@@ -174,6 +174,7 @@ public extension SubEditor {
         self.srtSubs.subs = entries
     }
 
+    /// List gaps between subtitles in the specified range.
     func listGaps(numberRange: ClosedRange<Int>) throws -> [GapListEntry] {
         try self.checkNumber(numberRange.lowerBound)
         try self.checkNumber(numberRange.upperBound)
