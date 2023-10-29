@@ -31,10 +31,6 @@ public struct SRTSubs {
     }
 }
 
-public struct InputSRTFormat: Equatable {
-    public var newlineMode: NewlineMode
-}
-
 public enum NewlineMode {
     case crLF
     case lf
