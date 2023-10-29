@@ -9,7 +9,7 @@ Subtweak is a command line tool and a Swift library for working with [SRT] subti
 This package can be used from the command line or as a Swift library. The supported operations are:
 
 - Remove a subtitle
-- Set the duration of a subtitle, optionally adjusting the following subtitles
+- Set the duration or the end time of a subtitle, optionally adjusting the following subtitles
 - Set the start time of a subtitle, optionally adjusting the following subtitles
 
 ## Command Line
