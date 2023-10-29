@@ -1,5 +1,8 @@
 import Foundation
 
+/// A subtitle.
+///
+/// One subtitle from a subtitle document, with the associated timing information.
 public struct Sub: Equatable {
     public var start: Duration
     public var duration: Duration
@@ -20,6 +23,7 @@ public struct Sub: Equatable {
     }
 }
 
+/// A list of subtitles.
 public struct Subs: Equatable {
     public var entries: [Sub]
 
