@@ -61,7 +61,7 @@ let package = Package(
             ]
         ),
         .testTarget(
-            name: "SubtweakTests",
+            name: "SubEditTests",
             dependencies: [
                 "SRTParse",
                 "SubEdit",
