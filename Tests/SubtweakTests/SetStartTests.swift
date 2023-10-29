@@ -103,4 +103,24 @@ final class SetStartTests: XCTestCase {
             )
         }
     }
+
+    func testSetStartOverlapNextWithAdjust() throws {
+        var editor = SubEditor(
+            srtSubs: SRTSubs(
+                subs: Subs(entries: [
+                    Sub(start: Duration.seconds(1), duration: Duration.seconds(1), text: "s1"),
+                    Sub(start: Duration.seconds(3), duration: Duration.seconds(1), text: "s2"),
+                ]),
+                newlineMode: .lf
+            )
+        )
+        try editor.setStart(number: 1, at: .seconds(3), shouldAdjustRest: true)
+        XCTAssertNoDifference(
+            editor.srtSubs.subs.entries,
+            [
+                Sub(start: Duration.seconds(3), duration: Duration.seconds(1), text: "s1"),
+                Sub(start: Duration.seconds(5), duration: Duration.seconds(1), text: "s2"),
+            ]
+        )
+    }
 }
