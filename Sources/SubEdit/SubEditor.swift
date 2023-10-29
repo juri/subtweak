@@ -87,6 +87,45 @@ public extension SubEditor {
         }
         self.srtSubs.subs.entries = entries
     }
+
+    /// Set the duration of a subtitle.
+    ///
+    /// The duration is sanity checked so that it does not cause the subtitle to overlap the next subtitle.
+    ///
+    /// - Parameters:
+    ///     - number: Subtitle number. The numbering starts at 1.
+    ///     - duration: New duration.
+    ///     - shouldAdjustRest: Flag that tells if the start times of the subtitles following this one
+    ///            should be adjusted with the difference between the old and new durations.
+    mutating func setDuration(number: Int, duration: Duration, shouldAdjustRest: Bool) throws {
+        try self.checkNumber(number)
+        try checkDuration(duration)
+
+        let index = number - 1
+        var entries = self.srtSubs.subs.entries
+        if duration > entries[index].duration &&
+            index < entries.index(before: entries.endIndex) &&
+            !shouldAdjustRest &&
+            entries[index].start + duration >= entries[index + 1].start
+        {
+            throw TimeOverlapError(
+                targetNumber: number,
+                targetSub: entries[index],
+                requestedTime: .duration(duration),
+                overlappingNumber: number + 1,
+                overlappingSub: entries[index + 1]
+            )
+        }
+
+        let difference = duration - entries[index].duration
+        entries[index].duration = duration
+        if shouldAdjustRest {
+            for index in entries.indices.dropFirst(index + 1) {
+                entries[index].start += difference
+            }
+        }
+        self.srtSubs.subs.entries = entries
+    }
 }
 
 private extension SubEditor {

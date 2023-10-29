@@ -7,7 +7,7 @@ import SubEdit
 struct Edit: ParsableCommand {
     static var configuration = CommandConfiguration(
         abstract: "Edit SRT file.",
-        subcommands: [Remove.self, SetStart.self]
+        subcommands: [Remove.self, SetDuration.self, SetStart.self]
     )
 }
 
@@ -54,6 +54,37 @@ struct SetStart: ParsableCommand {
 
         var editor = try SubEditor(source: input)
         try editor.setStart(number: self.numberOption.number, at: self.start, shouldAdjustRest: self.adjustRest)
+
+        try editor.write(target: output)
+    }
+}
+
+struct SetDuration: ParsableCommand {
+    static var configuration
+        = CommandConfiguration(abstract: "Set the duration of an entry.")
+
+    @OptionGroup
+    var numberOption: NumberOption
+
+    @Argument(help: "New duration", transform: parseDuration(_:))
+    var duration: Duration
+
+    @Flag(inversion: .prefixedNo, help: "Adjust the times of the following entries")
+    var adjustRest: Bool = true
+
+    @OptionGroup
+    var inputOutputOptions: InputOutputOptions
+
+    mutating func run() throws {
+        let input = try inputOutputOptions.input()
+        let output = try inputOutputOptions.output()
+
+        var editor = try SubEditor(source: input)
+        try editor.setDuration(
+            number: self.numberOption.number,
+            duration: self.duration,
+            shouldAdjustRest: self.adjustRest
+        )
 
         try editor.write(target: output)
     }
