@@ -222,9 +222,14 @@ private func checkDuration(_ duration: Duration) throws {
     }
 }
 
+/// Represents a subtitle with information about its position in the
+/// list and the empty duration that comes after it.
 public struct GapListEntry: Equatable {
+    /// The number of the subtitle in the subtitle document.
     public var number: Int
+    /// The subtitle.
     public var sub: Sub
+    /// The duration between this subtitle and the next one.
     public var gap: Duration
 
     public init(number: Int, sub: Sub, gap: Duration) {
