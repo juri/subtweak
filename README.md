@@ -1,3 +1,5 @@
+[![Build](https://github.com/juri/subtweak/actions/workflows/build.yml/badge.svg)](https://github.com/juri/subtweak/actions/workflows/build.yml)
+
 # Subtweak
 
 Subtweak is a command line tool and a Swift library for working with [SRT] subtitle files.
