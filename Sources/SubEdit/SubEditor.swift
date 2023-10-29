@@ -19,7 +19,7 @@ public extension SubEditor {
     init(source: Input) throws {
         let data = try source.read()
         guard let string = String(data: data, encoding: .utf8) else {
-            throw EncodingError()
+            throw InputDecodingError(input: source)
         }
 
         let subs = try parseSRT(string: string)
@@ -85,7 +85,13 @@ private extension SubEditor {
     }
 }
 
-public struct EncodingError: Error {}
+public struct InputDecodingError: Error, Equatable {
+    public var input: Input
+
+    public init(input: Input) {
+        self.input = input
+    }
+}
 
 public struct SubtitleNumberError: Error, Equatable {
     public var number: Int

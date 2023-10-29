@@ -1,6 +1,6 @@
 import Foundation
 
-public enum Input {
+public enum Input: Equatable {
     case stdin
     case url(URL)
 
@@ -14,7 +14,7 @@ public enum Input {
     }
 }
 
-public enum Output {
+public enum Output: Equatable {
     case stdout
     case url(URL)
 

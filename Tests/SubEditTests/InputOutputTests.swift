@@ -4,6 +4,22 @@ import SubEdit
 import XCTest
 
 final class InputOutputTests: XCTestCase {
+    func testInvalidEncoding() async throws {
+        try await inTemporaryDirectory { tempDir in
+            let bytes: [UInt8] = [0xC3, 0x28]
+            let data = Data(bytes)
+            let srtLocation = tempDir.appending(path: "invalid.srt", directoryHint: .notDirectory)
+            try data.write(to: srtLocation)
+            XCTAssertThrowsError(try SubEditor(source: .url(srtLocation))) { error in
+                guard let decodingError = error as? InputDecodingError else {
+                    XCTFail("Unexpected error \(error)")
+                    return
+                }
+                XCTAssertNoDifference(decodingError, InputDecodingError(input: .url(srtLocation)))
+            }
+        }
+    }
+
     func testWithLF() async throws {
         try await inTemporaryDirectory { tempDir in
             let srt = """
