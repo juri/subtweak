@@ -173,6 +173,36 @@ public extension SubEditor {
         }
         self.srtSubs.subs.entries = entries
     }
+
+    func listGaps(numberRange: ClosedRange<Int>) throws -> [GapListEntry] {
+        try self.checkNumber(numberRange.lowerBound)
+        try self.checkNumber(numberRange.upperBound)
+        guard numberRange.lowerBound < numberRange.upperBound else { return [] }
+
+        let entries = self.srtSubs.subs.entries
+        var gapList = [GapListEntry]()
+        for number in numberRange.lowerBound ..< numberRange.upperBound {
+            let index = number - 1
+            let entry = entries[index]
+            let nextEntry = entries[index + 1]
+            let gapListEntry = GapListEntry(
+                number: number,
+                sub: entry,
+                gap: nextEntry.start - entry.end
+            )
+            gapList.append(gapListEntry)
+        }
+
+        let lastNumber = numberRange.upperBound
+        let lastIndex = lastNumber - 1
+        let gap = if lastIndex < entries.index(before: entries.endIndex) {
+            entries[lastIndex + 1].start - entries[lastIndex].end
+        } else {
+            Duration.zero
+        }
+        gapList.append(GapListEntry(number: lastNumber, sub: entries[lastIndex], gap: gap))
+        return gapList
+    }
 }
 
 private extension SubEditor {
@@ -189,6 +219,18 @@ private extension SubEditor {
 private func checkDuration(_ duration: Duration) throws {
     guard duration.components.seconds >= 0 && duration.components.attoseconds >= 0 else {
         throw InvalidDurationError(duration: duration)
+    }
+}
+
+public struct GapListEntry: Equatable {
+    public var number: Int
+    public var sub: Sub
+    public var gap: Duration
+
+    public init(number: Int, sub: Sub, gap: Duration) {
+        self.number = number
+        self.sub = sub
+        self.gap = gap
     }
 }
 

@@ -8,7 +8,7 @@ struct Edit: ParsableCommand {
     static var configuration = CommandConfiguration(
         commandName: "subtweak",
         abstract: "Edit SRT file.",
-        subcommands: [Remove.self, SetDuration.self, SetEnd.self, SetStart.self]
+        subcommands: [ListGaps.self, Remove.self, SetDuration.self, SetEnd.self, SetStart.self]
     )
 }
 
@@ -126,9 +126,44 @@ struct SetEnd: ParsableCommand {
     }
 }
 
+struct ListGaps: ParsableCommand {
+    static var configuration = CommandConfiguration(
+        abstract: "List gaps following subtitles in range",
+        discussion: "Finds the subtitles in the specified range and lists the gaps after them."
+    )
+
+    @Argument(help: "Subtitle range start")
+    var from: Int
+
+    @Argument(help: "Subtitle range end")
+    var to: Int
+
+    @OptionGroup
+    var inputOptions: InputOptions
+
+    mutating func run() throws {
+        let input = try inputOptions.input()
+        let editor = try SubEditor(source: input)
+        let gaps = try editor.listGaps(numberRange: self.from ... self.to)
+
+        for gapEntry in gaps {
+            print("\(gapEntry.number): \(gapEntry.gap)")
+        }
+    }
+
+    func validate() throws {
+        guard self.from >= 1 && self.to >= 1 else {
+            throw ValidationError("Subtitle number must be at least 1")
+        }
+        guard self.from <= self.to else {
+            throw ValidationError("The from argument must not be larger than the to argument")
+        }
+    }
+}
+
 struct InputOutputOptions: ParsableArguments {
-    @Argument(help: "Input file in SRT format", transform: FileURL.init(from:))
-    var srtFile: FileURL?
+    @OptionGroup
+    var inputOptions: InputOptions
 
     @Flag(help: "Overwrite input file")
     var overwrite: Bool = false
@@ -137,12 +172,11 @@ struct InputOutputOptions: ParsableArguments {
     var outputFile: FileURL?
 
     func input() throws -> Input {
-        guard let srtFile = self.srtFile else { return .stdin }
-        return .url(srtFile.url)
+        try self.inputOptions.input()
     }
 
     func output() throws -> Output {
-        if self.overwrite { return .url(self.srtFile!.url) }
+        if self.overwrite { return .url(self.inputOptions.srtFile!.url) }
         if let outputFile = self.outputFile { return .url(outputFile.url) }
         return .stdout
     }
@@ -152,9 +186,19 @@ struct InputOutputOptions: ParsableArguments {
             throw ValidationError("Specify overwrite, output file or none, not both overwrite and output file")
         }
 
-        if self.overwrite && self.srtFile == nil {
+        if self.overwrite && self.inputOptions.srtFile == nil {
             throw ValidationError("Overwrite specified but reading from standard input")
         }
+    }
+}
+
+struct InputOptions: ParsableArguments {
+    @Argument(help: "Input file in SRT format", transform: FileURL.init(from:))
+    var srtFile: FileURL?
+
+    func input() throws -> Input {
+        guard let srtFile = self.srtFile else { return .stdin }
+        return .url(srtFile.url)
     }
 }
 

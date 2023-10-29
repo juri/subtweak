@@ -11,6 +11,7 @@ This package can be used from the command line or as a Swift library. The suppor
 - Remove a subtitle
 - Set the duration or the end time of a subtitle, optionally adjusting the following subtitles
 - Set the start time of a subtitle, optionally adjusting the following subtitles
+- List gaps between subtitles
 
 ## Command Line
 
