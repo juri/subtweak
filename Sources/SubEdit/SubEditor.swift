@@ -56,7 +56,7 @@ public extension SubEditor {
         try checkDuration(newStart)
         let index = number - 1
         var entries = self.srtSubs.subs
-        if newStart < entries[index].start && index > 0 && entries[index - 1].end > newStart {
+        if newStart < entries[index].start && index > 0 && entries[index - 1].end >= newStart {
             throw TimeOverlapError(
                 targetNumber: number,
                 targetSub: entries[index],
