@@ -2,14 +2,15 @@ import Foundation
 import Subtitles
 
 /// Parse a SRT document.
-public func parseSRT(string: String) throws -> SRTSubs {
+public func parseSRT(string: String, encoding: String.Encoding) throws -> SRTSubs {
     let newlineMode = detectNewlineMode(string)
     var string = string
     string = string.replacingOccurrences(of: "\r\n", with: "\n")
     let subtitles = try subtitlesDocument.parse(string)
     return SRTSubs(
         subs: subtitles.map(Subtitles.Sub.init(_:)),
-        newlineMode: newlineMode
+        newlineMode: newlineMode,
+        encoding: encoding
     )
 }
 
@@ -29,10 +30,17 @@ public struct SRTSubs {
     public var subs: [Sub]
     /// The newline format used in the SRT document.
     public var newlineMode: NewlineMode
+    /// The encoding used in the SRT document.
+    public var encoding: String.Encoding
 
-    public init(subs: [Sub], newlineMode: NewlineMode) {
+    public init(
+        subs: [Sub],
+        newlineMode: NewlineMode,
+        encoding: String.Encoding = .utf8
+    ) {
         self.subs = subs
         self.newlineMode = newlineMode
+        self.encoding = encoding
     }
 }
 

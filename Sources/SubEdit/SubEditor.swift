@@ -14,7 +14,10 @@ public struct SubEditor {
     /// Write `SubEditor`'s subtitles to an ``Output`` target.
     public func write(target: Output) throws {
         let str = try printSRT(srtSubs: self.srtSubs)
-        try target.write(data: Data(str.utf8))
+        guard let data = str.data(using: self.srtSubs.encoding) else {
+            throw OutputEncodingError(encoding: self.srtSubs.encoding)
+        }
+        try target.write(data: data)
     }
 }
 
@@ -22,11 +25,8 @@ public extension SubEditor {
     /// Initialize `SubEditor` with SRT data from an ``Input``.
     init(source: Input) throws {
         let data = try source.read()
-        guard let string = String(data: data, encoding: .utf8) else {
-            throw InputDecodingError(input: source)
-        }
-
-        let subs = try parseSRT(string: string)
+        let decoded = try decode(source: source, data: data)
+        let subs = try parseSRT(string: decoded.string, encoding: decoded.encoding)
         self.init(srtSubs: subs)
     }
 }
@@ -245,12 +245,21 @@ public struct GapListEntry: Equatable {
     }
 }
 
-/// Error thrown when decoding of the input as UTF-8 fails.
+/// Error thrown when decoding of the input fails.
 public struct InputDecodingError: Error, Equatable {
     public var input: Input
 
     public init(input: Input) {
         self.input = input
+    }
+}
+
+/// Error throws when encoding of the document fails.
+public struct OutputEncodingError: Error, Equatable {
+    public var encoding: String.Encoding
+
+    public init(encoding: String.Encoding) {
+        self.encoding = encoding
     }
 }
 
