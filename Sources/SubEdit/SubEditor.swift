@@ -174,6 +174,12 @@ public extension SubEditor {
         self.srtSubs.subs = entries
     }
 
+    mutating func setText(number: Int, text: String) throws {
+        try self.checkNumber(number)
+        let index = number - 1
+        self.srtSubs.subs[index].text = text
+    }
+
     /// List the current subtitles.
     var subs: [Sub] {
         self.srtSubs.subs
