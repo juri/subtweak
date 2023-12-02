@@ -32,6 +32,13 @@ public extension SubEditor {
 }
 
 public extension SubEditor {
+    /// Append a new subtitle at the end of the document.
+    mutating func append() {
+        let end = self.subs.last?.end ?? .zero
+        let sub = Sub(start: end + .seconds(1), duration: .seconds(1), text: "")
+        self.srtSubs.subs.append(sub)
+    }
+
     /// Insert a new subtitle as number `number`.
     mutating func insert(at number: Int) throws {
         try self.checkNumber(number)
