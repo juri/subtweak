@@ -32,6 +32,34 @@ public extension SubEditor {
 }
 
 public extension SubEditor {
+    /// Insert a new subtitle as number `number`.
+    mutating func insert(at number: Int) throws {
+        try self.checkNumber(number)
+        let index = number - 1
+        let spaceStart: Duration
+        let spaceEnd: Duration
+        if index == 0 {
+            let oldFirst = self.subs[0]
+            if oldFirst.start < .milliseconds(2) {
+                throw InsufficientSpaceForNewSubtitleError(number: number)
+            }
+            spaceStart = Duration.milliseconds(0)
+            spaceEnd = oldFirst.start
+        } else {
+            let previous = self.subs[index - 1]
+            let next = self.subs[index]
+            let space = next.start - previous.end
+            if space < .milliseconds(2) {
+                throw InsufficientSpaceForNewSubtitleError(number: number)
+            }
+            spaceStart = previous.end + .milliseconds(1)
+            spaceEnd = next.start
+        }
+        let length = (spaceEnd - spaceStart) / 3.0
+        let newSub = Sub(start: spaceStart + length, duration: length, text: "")
+        self.srtSubs.subs.insert(newSub, at: index)
+    }
+
     /// Remove a subtitle.
     ///
     /// - Parameter number: Subtitle number. The numbering starts at 1.
@@ -317,5 +345,15 @@ public struct InvalidDurationError: Error, Equatable {
 
     public init(duration: Duration) {
         self.duration = duration
+    }
+}
+
+/// Error thrown when trying to insert a new subtitle in a position
+/// without sufficient space.
+public struct InsufficientSpaceForNewSubtitleError: Error, Equatable {
+    public var number: Int
+
+    public init(number: Int) {
+        self.number = number
     }
 }
