@@ -14,6 +14,7 @@ final class InsertTests: XCTestCase {
             )
         )
 
+        XCTAssertTrue(editor.canInsert(at: 1))
         try editor.insert(at: 1)
 
         XCTAssertNoDifference(editor.subs, [
@@ -37,6 +38,7 @@ final class InsertTests: XCTestCase {
             )
         )
 
+        XCTAssertTrue(editor.canInsert(at: 2))
         try editor.insert(at: 2)
 
         XCTAssertNoDifference(editor.subs, [
@@ -54,6 +56,7 @@ final class InsertTests: XCTestCase {
             )
         )
 
+        XCTAssertFalse(editor.canInsert(at: 0))
         XCTAssertThrowsError(try editor.insert(at: 0)) { error in
             guard let error = error as? SubtitleNumberError else {
                 XCTFail("Unexpected error: \(error)")
@@ -73,6 +76,7 @@ final class InsertTests: XCTestCase {
             )
         )
 
+        XCTAssertFalse(editor.canInsert(at: 1))
         XCTAssertThrowsError(try editor.insert(at: 1)) { error in
             guard let error = error as? InsufficientSpaceForNewSubtitleError else {
                 XCTFail("Unexpected error: \(error)")
@@ -93,6 +97,7 @@ final class InsertTests: XCTestCase {
             )
         )
 
+        XCTAssertFalse(editor.canInsert(at: 2))
         XCTAssertThrowsError(try editor.insert(at: 2)) { error in
             guard let error = error as? InsufficientSpaceForNewSubtitleError else {
                 XCTFail("Unexpected error: \(error)")

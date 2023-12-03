@@ -39,6 +39,17 @@ public extension SubEditor {
         self.srtSubs.subs.append(sub)
     }
 
+    /// Check if insertion at ``number`` will succeed.
+    func canInsert(at number: Int) -> Bool {
+        do {
+            try self.checkNumber(number)
+        } catch {
+            return false
+        }
+        let insertionSpace = self.insertionSpace(atNumber: number)
+        return insertionSpace.isSufficient
+    }
+
     /// Insert a new subtitle as number `number`.
     mutating func insert(at number: Int) throws {
         try self.checkNumber(number)
