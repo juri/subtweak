@@ -46,21 +46,16 @@ public extension SubEditor {
         let spaceStart: Duration
         let spaceEnd: Duration
         if index == 0 {
-            let oldFirst = self.subs[0]
-            if oldFirst.start < .milliseconds(2) {
-                throw InsufficientSpaceForNewSubtitleError(number: number)
-            }
             spaceStart = Duration.milliseconds(0)
-            spaceEnd = oldFirst.start
+            spaceEnd = self.subs[0].start
         } else {
             let previous = self.subs[index - 1]
             let next = self.subs[index]
-            let space = next.start - previous.end
-            if space < .milliseconds(2) {
-                throw InsufficientSpaceForNewSubtitleError(number: number)
-            }
             spaceStart = previous.end + .milliseconds(1)
             spaceEnd = next.start
+        }
+        if spaceEnd - spaceStart < .milliseconds(2) {
+            throw InsufficientSpaceForNewSubtitleError(number: number)
         }
         let length = (spaceEnd - spaceStart) / 3.0
         let newSub = Sub(start: spaceStart + length, duration: length, text: "")
