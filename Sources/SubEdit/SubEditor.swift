@@ -42,24 +42,13 @@ public extension SubEditor {
     /// Insert a new subtitle as number `number`.
     mutating func insert(at number: Int) throws {
         try self.checkNumber(number)
-        let index = number - 1
-        let spaceStart: Duration
-        let spaceEnd: Duration
-        if index == 0 {
-            spaceStart = Duration.milliseconds(0)
-            spaceEnd = self.subs[0].start
-        } else {
-            let previous = self.subs[index - 1]
-            let next = self.subs[index]
-            spaceStart = previous.end + .milliseconds(1)
-            spaceEnd = next.start
-        }
-        if spaceEnd - spaceStart < .milliseconds(2) {
+        let insertionSpace = self.insertionSpace(atNumber: number)
+        guard insertionSpace.isSufficient else {
             throw InsufficientSpaceForNewSubtitleError(number: number)
         }
-        let length = (spaceEnd - spaceStart) / 3.0
-        let newSub = Sub(start: spaceStart + length, duration: length, text: "")
-        self.srtSubs.subs.insert(newSub, at: index)
+        let length = insertionSpace.length / 3.0
+        let newSub = Sub(start: insertionSpace.start + length, duration: length, text: "")
+        self.srtSubs.subs.insert(newSub, at: number - 1)
     }
 
     /// Remove a subtitle.
@@ -256,6 +245,22 @@ private extension SubEditor {
             )
         }
     }
+
+    private func insertionSpace(atNumber number: Int) -> InsertionSpace {
+        let index = number - 1
+        let spaceStart: Duration
+        let spaceEnd: Duration
+        if index == 0 {
+            spaceStart = Duration.milliseconds(0)
+            spaceEnd = self.subs[0].start
+        } else {
+            let previous = self.subs[index - 1]
+            let next = self.subs[index]
+            spaceStart = previous.end + .milliseconds(1)
+            spaceEnd = next.start
+        }
+        return InsertionSpace(start: spaceStart, end: spaceEnd)
+    }
 }
 
 private func checkDuration(_ duration: Duration) throws {
@@ -357,5 +362,18 @@ public struct InsufficientSpaceForNewSubtitleError: Error, Equatable {
 
     public init(number: Int) {
         self.number = number
+    }
+}
+
+private struct InsertionSpace {
+    var start: Duration
+    var end: Duration
+
+    var length: Duration {
+        self.end - self.start
+    }
+
+    var isSufficient: Bool {
+        self.length > .milliseconds(2)
     }
 }
