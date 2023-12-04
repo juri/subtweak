@@ -4,7 +4,7 @@ import SRTParse
 
 /// `SubEditor` reads, edits and writes subtitles.
 public struct SubEditor {
-    public private(set) var srtSubs: SRTSubs
+    public var srtSubs: SRTSubs
 
     /// Initializes `SubEditor` with subtitles read from a SRT file.
     public init(srtSubs: SRTSubs) {
