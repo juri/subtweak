@@ -3,7 +3,7 @@ import Foundation
 /// A subtitle.
 ///
 /// One subtitle from a subtitle document, with the associated timing information.
-public struct Sub: Equatable {
+public struct Sub: Equatable, Sendable {
     public var start: Duration
     public var duration: Duration
     public var text: String
