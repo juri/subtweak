@@ -1,5 +1,5 @@
 import Foundation
-import Parsing
+@preconcurrency import Parsing
 
 /*
  1
