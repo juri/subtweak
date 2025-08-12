@@ -328,7 +328,7 @@ public struct SubtitleNumberError: Error, Equatable {
 
 /// Error thrown when editor operation would result in overlapping subtitle times.
 public struct TimeOverlapError: Error, Equatable {
-    public enum TimeField: Equatable {
+    public enum TimeField: Equatable, Sendable {
         case start(Duration)
         case duration(Duration)
         case end(Duration)
