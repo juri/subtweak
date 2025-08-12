@@ -1,7 +1,7 @@
 import Foundation
 
 /// Input source for subtitle editing.
-public enum Input: Equatable {
+public enum Input: Equatable, Sendable {
     /// Read from standard input.
     case stdin
 
