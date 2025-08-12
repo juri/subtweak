@@ -1,9 +1,9 @@
 import CustomDump
 @testable import SRTParse
-import XCTest
+import Testing
 
-final class SRTTests: XCTestCase {
-    func testParseDocument() throws {
+@Suite struct SRTTests {
+    @Test func parseDocument() throws {
         let srt = """
         1
         00:05:00,040 --> 00:05:15,300
@@ -39,13 +39,13 @@ final class SRTTests: XCTestCase {
         )
     }
 
-    func testPrintTimestamp() throws {
+    @Test func printTimestamp() throws {
         let ts = Timestamp(hours: 0, minutes: 1, seconds: 2, fraction: 3, fractionDigitCount: 3)
         let str = String(try timestamp.print(ts))
         expectNoDifference(str, "00:01:02,003")
     }
 
-    func testPrintSubtitle() throws {
+    @Test func printSubtitle() throws {
         let sub = Subtitle(
             number: 1,
             start: Timestamp(hours: 0, minutes: 5, seconds: 0, fraction: 400, fractionDigitCount: 3),
@@ -66,7 +66,7 @@ final class SRTTests: XCTestCase {
         )
     }
 
-    func testPrintDocument() throws {
+    @Test func printDocument() throws {
         let subs = [
             Subtitle(
                 number: 1,

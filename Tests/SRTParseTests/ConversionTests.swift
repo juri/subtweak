@@ -1,24 +1,24 @@
 import CustomDump
 @testable import SRTParse
 import Subtitles
-import XCTest
+import Testing
 
-final class ConversionTests: XCTestCase {
-    func testTimestampFromDuration() throws {
+@Suite struct ConversionTests {
+    @Test func timestampFromDuration() throws {
         // 9296 seconds = 2:34:56
         let duration = Duration(secondsComponent: 9296, attosecondsComponent: 123_600_000_000_000_000)
         let ts = Timestamp(duration)
         expectNoDifference(ts, Timestamp(hours: 2, minutes: 34, seconds: 56, fraction: 124, fractionDigitCount: 3))
     }
 
-    func testTimestampToDuration() throws {
+    @Test func timestampToDuration() throws {
         // 9296 seconds = 2:34:56
         let ts = Timestamp(hours: 2, minutes: 34, seconds: 56, fraction: 124, fractionDigitCount: 3)
         let duration = ts.duration
         expectNoDifference(duration, Duration(secondsComponent: 9296, attosecondsComponent: 124_000_000_000_000_000))
     }
 
-    func testSubtitleToSub() throws {
+    @Test func subtitleToSub() throws {
         let subtitle = Subtitle(
             number: 2,
             start: Timestamp(hours: 1, minutes: 1, seconds: 1, fraction: 23, fractionDigitCount: 3),
@@ -36,7 +36,7 @@ final class ConversionTests: XCTestCase {
         )
     }
 
-    func testSubToSubtitle() throws {
+    @Test func subToSubtitle() throws {
         let sub = Sub(
             start: Duration(secondsComponent: 3661, attosecondsComponent: 23_000_000_000_000_000),
             duration: Duration(secondsComponent: 2, attosecondsComponent: 1_000_000_000_000_000),
@@ -54,7 +54,7 @@ final class ConversionTests: XCTestCase {
         )
     }
 
-    func testSubsToSubtitles() throws {
+    @Test func subsToSubtitles() throws {
         let subs = [
             Sub(
                 start: Duration(secondsComponent: 3661, attosecondsComponent: 23_000_000_000_000_000),
