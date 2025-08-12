@@ -19,7 +19,7 @@ final class SRTTests: XCTestCase {
         """
 
         let subs = try subtitlesDocument.parse(srt)
-        XCTAssertNoDifference(
+        expectNoDifference(
             subs,
             [
                 Subtitle(
@@ -42,7 +42,7 @@ final class SRTTests: XCTestCase {
     func testPrintTimestamp() throws {
         let ts = Timestamp(hours: 0, minutes: 1, seconds: 2, fraction: 3, fractionDigitCount: 3)
         let str = String(try timestamp.print(ts))
-        XCTAssertNoDifference(str, "00:01:02,003")
+        expectNoDifference(str, "00:01:02,003")
     }
 
     func testPrintSubtitle() throws {
@@ -53,7 +53,7 @@ final class SRTTests: XCTestCase {
             text: "This is an example of\na subtitle."
         )
         let str = String(try subtitle.print(sub))
-        XCTAssertNoDifference(
+        expectNoDifference(
             str,
             """
             1
@@ -97,6 +97,6 @@ final class SRTTests: XCTestCase {
 
         """
 
-        XCTAssertNoDifference(doc, expect)
+        expectNoDifference(doc, expect)
     }
 }

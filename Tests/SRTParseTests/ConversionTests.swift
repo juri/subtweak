@@ -8,14 +8,14 @@ final class ConversionTests: XCTestCase {
         // 9296 seconds = 2:34:56
         let duration = Duration(secondsComponent: 9296, attosecondsComponent: 123_600_000_000_000_000)
         let ts = Timestamp(duration)
-        XCTAssertNoDifference(ts, Timestamp(hours: 2, minutes: 34, seconds: 56, fraction: 124, fractionDigitCount: 3))
+        expectNoDifference(ts, Timestamp(hours: 2, minutes: 34, seconds: 56, fraction: 124, fractionDigitCount: 3))
     }
 
     func testTimestampToDuration() throws {
         // 9296 seconds = 2:34:56
         let ts = Timestamp(hours: 2, minutes: 34, seconds: 56, fraction: 124, fractionDigitCount: 3)
         let duration = ts.duration
-        XCTAssertNoDifference(duration, Duration(secondsComponent: 9296, attosecondsComponent: 124_000_000_000_000_000))
+        expectNoDifference(duration, Duration(secondsComponent: 9296, attosecondsComponent: 124_000_000_000_000_000))
     }
 
     func testSubtitleToSub() throws {
@@ -26,7 +26,7 @@ final class ConversionTests: XCTestCase {
             text: "Hello!"
         )
         let sub = Sub(subtitle)
-        XCTAssertNoDifference(
+        expectNoDifference(
             sub,
             Sub(
                 start: Duration(secondsComponent: 3661, attosecondsComponent: 23_000_000_000_000_000),
@@ -43,7 +43,7 @@ final class ConversionTests: XCTestCase {
             text: "Hello!"
         )
         let subtitle = Subtitle(number: 3, sub: sub)
-        XCTAssertNoDifference(
+        expectNoDifference(
             subtitle,
             Subtitle(
                 number: 3,
@@ -68,7 +68,7 @@ final class ConversionTests: XCTestCase {
             ),
         ]
         let subtitles = Subtitle.subtitles(from: subs)
-        XCTAssertNoDifference(
+        expectNoDifference(
             subtitles,
             [
                 Subtitle(
