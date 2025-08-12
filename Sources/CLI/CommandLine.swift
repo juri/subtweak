@@ -5,7 +5,7 @@ import SubEdit
 
 @main
 struct Edit: ParsableCommand {
-    static var configuration = CommandConfiguration(
+    static let configuration = CommandConfiguration(
         commandName: "subtweak",
         abstract: "Edit SRT file.",
         subcommands: [ListGaps.self, Remove.self, SetDuration.self, SetEnd.self, SetStart.self]
@@ -13,7 +13,7 @@ struct Edit: ParsableCommand {
 }
 
 struct Remove: ParsableCommand {
-    static var configuration
+    static let configuration
         = CommandConfiguration(abstract: "Remove a subtitle entry from file.")
 
     @OptionGroup
@@ -34,7 +34,7 @@ struct Remove: ParsableCommand {
 }
 
 struct SetStart: ParsableCommand {
-    static var configuration
+    static let configuration
         = CommandConfiguration(abstract: "Set the start time of an entry.")
 
     @OptionGroup
@@ -61,7 +61,7 @@ struct SetStart: ParsableCommand {
 }
 
 struct SetDuration: ParsableCommand {
-    static var configuration = CommandConfiguration(
+    static let configuration = CommandConfiguration(
         abstract: "Set the duration of an entry.",
         discussion: "See also set-end to set the end with a time stamp."
     )
@@ -94,7 +94,7 @@ struct SetDuration: ParsableCommand {
 }
 
 struct SetEnd: ParsableCommand {
-    static var configuration = CommandConfiguration(
+    static let configuration = CommandConfiguration(
         abstract: "Set the end time of an entry.",
         discussion: "See also set-duration to set the end relative to the start of the subtitle."
     )
@@ -127,7 +127,7 @@ struct SetEnd: ParsableCommand {
 }
 
 struct ListGaps: ParsableCommand {
-    static var configuration = CommandConfiguration(
+    static let configuration = CommandConfiguration(
         abstract: "List gaps following subtitles in range.",
         discussion: "Finds the subtitles in the specified range and lists the gaps after them."
     )
