@@ -17,7 +17,11 @@ public func parseSRT(string: String, encoding: String.Encoding) throws -> SRTSub
 /// Print a SRT document.
 public func printSRT(srtSubs: SRTSubs) throws -> String {
     let subtitles = Subtitle.subtitles(from: srtSubs.subs)
-    let str = String(try subtitlesDocument.print(subtitles))
+    var str = String(try subtitlesDocument.print(subtitles))
+    while !str.hasSuffix("\n\n") {
+        str.append("\n")
+    }
+
     guard srtSubs.newlineMode != .lf else {
         return str
     }

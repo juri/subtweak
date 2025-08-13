@@ -73,15 +73,36 @@ private func magnitude(_ i: Int) -> Int {
     return m
 }
 
-let subtitle = ParsePrint(input: Substring.self) {
+let subtitleText = OneOf {
+    Parse {
+        PrefixUpTo("\n\n")
+        "\n\n"
+    }
+
+    Parse {
+        Rest()
+        End()
+    }.map(
+        AnyConversion(
+            apply: { if $0.hasSuffix("\n") { $0.dropLast() } else { $0 } },
+            unapply: { $0 }
+        )
+    )
+}
+.eraseToAnyParserPrinter()
+
+let subtitleEntry = ParsePrint(input: Substring.self) {
     Int.parser()
     "\n"
     timestamp
     " --> "
     timestamp
     "\n"
-    PrefixUpTo("\n\n")
-    "\n\n"
+    subtitleText
+}
+
+let subtitle = ParsePrint(input: Substring.self) {
+    subtitleEntry
 }.map(
     AnyConversion(
         apply: { n, s, e, t in
