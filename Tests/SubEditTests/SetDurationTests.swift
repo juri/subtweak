@@ -109,7 +109,7 @@ final class SetDurationTests: XCTestCase {
         )
 
         try editor.setDuration(number: 1, duration: Duration.seconds(3), shouldAdjustRest: true)
-        XCTAssertNoDifference(
+        expectNoDifference(
             editor.srtSubs.subs,
             [
                 Sub(start: Duration.seconds(1), duration: Duration.seconds(3), text: "s1"),
@@ -130,7 +130,7 @@ final class SetDurationTests: XCTestCase {
         )
 
         try editor.setDuration(number: 1, duration: Duration.seconds(2), shouldAdjustRest: false)
-        XCTAssertNoDifference(
+        expectNoDifference(
             editor.srtSubs.subs,
             [
                 Sub(start: Duration.seconds(1), duration: Duration.seconds(2), text: "s1"),
@@ -151,7 +151,7 @@ final class SetDurationTests: XCTestCase {
         )
 
         try editor.setDuration(number: 1, duration: Duration.seconds(2), shouldAdjustRest: true)
-        XCTAssertNoDifference(
+        expectNoDifference(
             editor.srtSubs.subs,
             [
                 Sub(start: Duration.seconds(1), duration: Duration.seconds(2), text: "s1"),

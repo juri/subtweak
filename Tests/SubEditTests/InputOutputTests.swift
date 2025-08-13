@@ -15,7 +15,7 @@ final class InputOutputTests: XCTestCase {
                     XCTFail("Unexpected error \(error)")
                     return
                 }
-                XCTAssertNoDifference(decodingError, InputDecodingError(input: .url(srtLocation)))
+                expectNoDifference(decodingError, InputDecodingError(input: .url(srtLocation)))
             }
         }
     }
@@ -38,7 +38,7 @@ final class InputOutputTests: XCTestCase {
             try Data(srt.utf8).write(to: srtLocation)
             let editor = try SubEditor(source: .url(srtLocation))
 
-            XCTAssertNoDifference(
+            expectNoDifference(
                 editor.srtSubs.subs,
                 [
                     Sub(start: .milliseconds(60023), duration: .milliseconds(2433), text: "Nothing to be done."),
@@ -49,13 +49,13 @@ final class InputOutputTests: XCTestCase {
                     ),
                 ]
             )
-            XCTAssertNoDifference(editor.srtSubs.newlineMode, .lf)
+            expectNoDifference(editor.srtSubs.newlineMode, .lf)
 
             let saveLocation = tempDir.appendingPathComponent("save.srt", isDirectory: false)
             try editor.write(target: .url(saveLocation))
             let writtenData = try Data(contentsOf: saveLocation)
 
-            XCTAssertNoDifference(String(data: writtenData, encoding: .utf8), srt)
+            expectNoDifference(String(data: writtenData, encoding: .utf8), srt)
         }
     }
 
@@ -77,7 +77,7 @@ final class InputOutputTests: XCTestCase {
             try Data(srt.utf8).write(to: srtLocation)
             let editor = try SubEditor(source: .url(srtLocation))
 
-            XCTAssertNoDifference(
+            expectNoDifference(
                 editor.srtSubs.subs,
                 [
                     Sub(start: .milliseconds(60023), duration: .milliseconds(2433), text: "Nothing to be done."),
@@ -88,13 +88,13 @@ final class InputOutputTests: XCTestCase {
                     ),
                 ]
             )
-            XCTAssertNoDifference(editor.srtSubs.newlineMode, .crLF)
+            expectNoDifference(editor.srtSubs.newlineMode, .crLF)
 
             let saveLocation = tempDir.appendingPathComponent("save.srt", isDirectory: false)
             try editor.write(target: .url(saveLocation))
             let writtenData = try Data(contentsOf: saveLocation)
 
-            XCTAssertNoDifference(writtenData, Data(srt.utf8))
+            expectNoDifference(writtenData, Data(srt.utf8))
         }
     }
 
@@ -117,7 +117,7 @@ final class InputOutputTests: XCTestCase {
             try Data(Data([0xEF, 0xBB, 0xBF]) + srt.utf8).write(to: srtLocation)
             let editor = try SubEditor(source: .url(srtLocation))
 
-            XCTAssertNoDifference(
+            expectNoDifference(
                 editor.srtSubs.subs,
                 [
                     Sub(start: .milliseconds(60023), duration: .milliseconds(2433), text: "Nothing to be done."),
@@ -128,13 +128,13 @@ final class InputOutputTests: XCTestCase {
                     ),
                 ]
             )
-            XCTAssertNoDifference(editor.srtSubs.newlineMode, .lf)
+            expectNoDifference(editor.srtSubs.newlineMode, .lf)
 
             let saveLocation = tempDir.appendingPathComponent("save.srt", isDirectory: false)
             try editor.write(target: .url(saveLocation))
             let writtenData = try Data(contentsOf: saveLocation)
 
-            XCTAssertNoDifference(String(data: writtenData, encoding: .utf8), srt)
+            expectNoDifference(String(data: writtenData, encoding: .utf8), srt)
         }
     }
 }

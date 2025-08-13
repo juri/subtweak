@@ -17,7 +17,7 @@ final class InsertTests: XCTestCase {
         XCTAssertTrue(editor.canInsert(at: 1))
         try editor.insert(at: 1)
 
-        XCTAssertNoDifference(editor.subs, [
+        expectNoDifference(editor.subs, [
             Sub(
                 start: .init(secondsComponent: 0, attosecondsComponent: 333_333_333_333_333_312),
                 duration: .init(secondsComponent: 0, attosecondsComponent: 333_333_333_333_333_312),
@@ -41,7 +41,7 @@ final class InsertTests: XCTestCase {
         XCTAssertTrue(editor.canInsert(at: 2))
         try editor.insert(at: 2)
 
-        XCTAssertNoDifference(editor.subs, [
+        expectNoDifference(editor.subs, [
             Sub(start: .zero, duration: .seconds(1), text: "n1"),
             Sub(start: .milliseconds(1334), duration: .milliseconds(333), text: ""),
             Sub(start: .seconds(2), duration: .seconds(1), text: "n2"),
@@ -62,7 +62,7 @@ final class InsertTests: XCTestCase {
                 XCTFail("Unexpected error: \(error)")
                 return
             }
-            XCTAssertNoDifference(error, SubtitleNumberError(number: 0, numberOfEntries: 0))
+            expectNoDifference(error, SubtitleNumberError(number: 0, numberOfEntries: 0))
         }
     }
 
@@ -82,7 +82,7 @@ final class InsertTests: XCTestCase {
                 XCTFail("Unexpected error: \(error)")
                 return
             }
-            XCTAssertNoDifference(error, InsufficientSpaceForNewSubtitleError(number: 1))
+            expectNoDifference(error, InsufficientSpaceForNewSubtitleError(number: 1))
         }
     }
 
@@ -103,7 +103,7 @@ final class InsertTests: XCTestCase {
                 XCTFail("Unexpected error: \(error)")
                 return
             }
-            XCTAssertNoDifference(error, InsufficientSpaceForNewSubtitleError(number: 2))
+            expectNoDifference(error, InsufficientSpaceForNewSubtitleError(number: 2))
         }
     }
 }

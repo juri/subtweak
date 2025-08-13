@@ -23,7 +23,7 @@ final class ListGapsTests: XCTestCase {
         )
 
         let gaps = try editor.listGaps(numberRange: 2 ... 6)
-        XCTAssertNoDifference(
+        expectNoDifference(
             gaps,
             [
                 GapListEntry(number: 2, sub: subs[1], gap: .seconds(2)),
@@ -52,7 +52,7 @@ final class ListGapsTests: XCTestCase {
         )
 
         let gaps = try editor.listGaps(numberRange: 2 ... 6)
-        XCTAssertNoDifference(
+        expectNoDifference(
             gaps,
             [
                 GapListEntry(number: 2, sub: subs[1], gap: .seconds(2)),
@@ -77,7 +77,7 @@ final class ListGapsTests: XCTestCase {
         )
 
         let gaps = try editor.listGaps(numberRange: 2 ... 2)
-        XCTAssertNoDifference(gaps, [])
+        expectNoDifference(gaps, [])
     }
 
     func testBadLower() throws {
@@ -97,7 +97,7 @@ final class ListGapsTests: XCTestCase {
                 XCTFail("Unexpected error \(error)")
                 return
             }
-            XCTAssertNoDifference(numberError, SubtitleNumberError(number: 3, numberOfEntries: 2))
+            expectNoDifference(numberError, SubtitleNumberError(number: 3, numberOfEntries: 2))
         }
     }
 
@@ -118,7 +118,7 @@ final class ListGapsTests: XCTestCase {
                 XCTFail("Unexpected error \(error)")
                 return
             }
-            XCTAssertNoDifference(numberError, SubtitleNumberError(number: 4, numberOfEntries: 2))
+            expectNoDifference(numberError, SubtitleNumberError(number: 4, numberOfEntries: 2))
         }
     }
 }

@@ -25,7 +25,7 @@ final class RemoveTests: XCTestCase {
 
         try editor.remove(number: 1)
 
-        XCTAssertNoDifference(
+        expectNoDifference(
             editor.srtSubs.subs,
             [
                 Sub(
@@ -50,7 +50,7 @@ final class RemoveTests: XCTestCase {
 
         try editor.remove(number: 2)
 
-        XCTAssertNoDifference(
+        expectNoDifference(
             editor.srtSubs.subs,
             [Sub(start: Duration.seconds(1), duration: Duration.seconds(1), text: "s1")]
         )
